@@ -1,0 +1,11 @@
+Stability YOutube Tutorial
+https://www.youtube.com/playlist?list=PLtl5ylS6jdP6uOxzSJKPnUsvMbkmalfKg
+
+
+XFLR5 Stability Theory
+https://www.xflr5.tech/docs/XFLR5_and_Stability_analysis.pdf
+
+
+XFLR5 Modal Analysis
+https://www.xflr5.tech/docs/XFLR5_Mode_Measurements.pdf
+
