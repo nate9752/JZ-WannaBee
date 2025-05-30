@@ -19,10 +19,16 @@ clear; clc; close all;
 
 %% Aircraft Geometry Selection 
 
-aircraft_input = "RCTB_V1";   % first RC tube and wing project, Version 1
+aircraft_input = "RCTB_V1.m";   % first RC tube and wing project, Version 1
 
 
 %% Propulsion Selection 
+
+% Battery Seleciton 
+battery_input = "generic_battery";
+
+% ESC Selection 
+ESC_input = "generic_ESC";
 
 % Motor Selection
 motor_input = "generic_motor";
@@ -30,14 +36,8 @@ motor_input = "generic_motor";
 % Propeller Selection
 propeller_input = "generic_propeller";
 
-% ESC Selection 
-ESC_input = "generic_ESC";
-
 % Servo Selection 
 servo_input = "generic_servo";
-
-% Battery Seleciton 
-battery_input = "generic_battery";
 
 % Miscellaneous Selection 
 
@@ -51,6 +51,13 @@ mission_input = "generic_mission";
 
 %% Load Aircraft Inputs
 
+inputs = loadInputs(aircraft_input, battery_input, ESC_input, motor_input,...
+                    propeller_input, servo_input);
+
+aircraft = loadAircraft(inputs);
+aircraft = loadEngine(inputs, aircraft);
+aircraft = loadControls(inputs, aircraft);
+aircraft = loadAero(inputs, aircraft);
 
 
 %% Load CFD Data 
