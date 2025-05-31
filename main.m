@@ -45,7 +45,7 @@ servo_input = "generic_servo";
 
 %% Mission Selection 
 
-mission_input = "generic_mission";
+mission_input = "5minuteFlight";
 
 
 
@@ -60,9 +60,31 @@ aircraft = loadControls(inputs, aircraft);
 aircraft = loadAero(inputs, aircraft);
 
 
+%% Load Atmosphere
+
+atmosphere = buildAtmosphere;
+
+
 %% Load CFD Data 
 
 
+%% General Sizing 
 
-%% Simulations
+
+% This section first calculates a battery weight fraction for the aircraft,
+% then finds the intersection along some historical data -> 
+% Wpl + Wbatt = Wgross - Wempty
+%
+% This data is then used in our constraint matrix to find W/S and W/P
+% Then, some prelimary geometry, drag calculations, and structural 
+% calculations are preformed. 
+% aircraft = calcBatteryWeightFraction(aircraft,engine,mission);
+% 
+% [aircraft,weight] = plotWeightIntersect(aircraft.WB_W,payload,aircraft,weight);
+% 
+% [aircraft,geom] = plotConstraintAnalysis(aircraft,engine,aero,atmosphere,geom);
+% 
+% [aircraft,geom] = calcGeom(aircraft,geom);
+% aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero);
+% plotVnDiagram(atmosphere,aircraft);
 
