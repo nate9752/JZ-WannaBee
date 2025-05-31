@@ -5,12 +5,15 @@
 %   This code will serve as the center of our aircraft sizing caluclations,
 %   as well as our general performance analysis and trade studies. This 
 %   code draws inspiration from JZ-X, JetZero's in house aircraft sizing
-%   tool. 
+%   tool. I also have taken much of my own code from a previous project,
+%   design build fly, in which me and a group of engineers build an RC
+%   aircraft in my undergrad. 
 %
 %   TO DO: 
-%      - Input basic mission parameters section
-%      - Add aircraft inputs sections (load geometries, relevent sizing
-%      parameters, information from requirements, etc.).
+%      - Read sizing textbooks to create a more optimized weight and
+%      geometry sizing process. 
+%      - Fix calcBatteryWeightFraction Function to be more relatively
+%      accurate compared to historical data.
 %      - 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,15 +48,16 @@ servo_input = "generic_servo";
 
 %% Mission Selection 
 
-mission_input = "5minuteFlight";
+mission_input = "fiveMinuteFlight.m";
 
 
 
 %% Load Aircraft Inputs
 
 inputs = loadInputs(aircraft_input, battery_input, ESC_input, motor_input,...
-                    propeller_input, servo_input);
+                    propeller_input, servo_input, mission_input);
 
+mission = loadMission(inputs);
 aircraft = loadAircraft(inputs);
 aircraft = loadEngine(inputs, aircraft);
 aircraft = loadControls(inputs, aircraft);
@@ -65,11 +69,7 @@ aircraft = loadAero(inputs, aircraft);
 atmosphere = buildAtmosphere;
 
 
-%% Load CFD Data 
-
-
 %% General Sizing 
-
 
 % This section first calculates a battery weight fraction for the aircraft,
 % then finds the intersection along some historical data -> 
@@ -78,9 +78,10 @@ atmosphere = buildAtmosphere;
 % This data is then used in our constraint matrix to find W/S and W/P
 % Then, some prelimary geometry, drag calculations, and structural 
 % calculations are preformed. 
-% aircraft = calcBatteryWeightFraction(aircraft,engine,mission);
-% 
-% [aircraft,weight] = plotWeightIntersect(aircraft.WB_W,payload,aircraft,weight);
+
+aircraft = calcBatteryWeightFraction(aircraft,mission);
+
+aircraft = plotWeightIntersect(aircraft);
 % 
 % [aircraft,geom] = plotConstraintAnalysis(aircraft,engine,aero,atmosphere,geom);
 % 
