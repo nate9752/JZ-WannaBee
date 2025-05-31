@@ -12,9 +12,7 @@
 %   TO DO: 
 %      - Read sizing textbooks to create a more optimized weight and
 %      geometry sizing process. 
-%      - Fix calcBatteryWeightFraction Function to be more relatively
-%      accurate compared to historical data.
-%      - 
+%      - Start inporting XFLR5 data + optimize drag predictor function. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
