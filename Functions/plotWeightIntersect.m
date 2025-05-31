@@ -1,4 +1,4 @@
-function [aircraft,weight] = plotWeightIntersect(WB_W,payload,aircraft,weight)
+function aircraft = plotWeightIntersect(aircraft)
 % plot Weight Intersect
 %   This code will combine databases from AIAA,, AAE451, and my personal
 %   built RC aircraft to create a plot of W-We and Wpl+Wbatt vs. Gross
@@ -11,15 +11,25 @@ function [aircraft,weight] = plotWeightIntersect(WB_W,payload,aircraft,weight)
 %  
 %
 
-data = readmatrix('RCAircraftHistoricData.xlsx');
+%% Unpackage 
 
-index = data(:,2) > 20;   % finds outliers
+WB_W = aircraft.weight.WB_W;
+payload = aircraft.weight.payload;
+
+
+%% Import Historical Data
+
+data = readmatrix('RCAircraftHistoricWeightData.xlsx');
+
+index = data(:,7) > 25;   % finds outliers in gross weight, can change depending on current design
 data(index,:) = [];
-index = data(:,2) - data(:,4) > 12;
+% index = data(:,7) - data(:,9) > 12;
+% data(index,:) = [];
+index = data(:,7) - data(:,9) < 0.5;   % finds planes with no battery or playload
 data(index,:) = [];
 
-w = data(:,2);   % gross aircraft weight 
-we = data(:,4);   % empty weight 
+w = data(:,7);   % gross aircraft weight 
+we = data(:,9);   % empty weight 
 
 
 %% Sizing Plot - (W-We) and (Wb+Wpl) vs. W 
@@ -50,11 +60,8 @@ fprintf('Add 10%% Error Bound: %.3f lbf\n\n',intersect * 1.1);
 
 %% Packaging
 
-% Weight
-weight.gross = intersect*1.1;
-
 % aircraft
-aircraft.gross = intersect*1.1;
+aircraft.weight.gross = intersect*1.1;
 
 
 
