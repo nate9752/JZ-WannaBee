@@ -1,5 +1,5 @@
 function aircraft = loadAircraft(inputs)
-% [aircraft, geom, weight]= loadAircraft(inputs)
+% aircraft = loadAircraft(inputs)
 %
 %   - This function will take a .m aircraft input file and load it's
 %   contents to the various structures within this project. Standardized
