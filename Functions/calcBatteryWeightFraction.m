@@ -50,7 +50,7 @@ fprintf('Weight Fraction Buildup: \n');
 fprintf('1/W * [WB = WBto + WBwu + WBcl + WBlf + WBtu]\n');
 fprintf('%.4f + %.4f + %.4f + %.4f + %.4f = %.4f\n\n',WBto_W,WBwu_W,WBcl_W,WBlf_W,WBtu_W,WB_W);
 
-aircraft.weeight.WB_W = WB_W;
+aircraft.weight.WB_W = WB_W;
 
 end
 
