@@ -1,8 +1,9 @@
 % Aircraft Input file 
 % Remote Controlled Tube and Wing - Version 1
-%    -NACA 2412 wings, NACA 0012 for tails.
-%    -Mid wing, foam fuselage and wings, small wingspan, Standard horizontal
+%    - NACA 2412 wings, NACA 0012 for tails.
+%    - Mid wing, foam fuselage and wings, small wingspan, Standard horizontal
 %     and vertical stabilizer.
+%    - No payload.
 %
 
 aircraft = struct();
@@ -45,7 +46,7 @@ tc_vt = 0.12;   % thickness to chord ratio vertical tail
 
 %% Weights (when concept is more developed)
 
-
+payload = 0;   % [lbf]
 
 
 %% Packaging 
@@ -88,3 +89,6 @@ aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
 aircraft.geom.horztail.tc_h = tc_ht;
 
 aircraft.geom.verttail.tc_v = tc_vt;
+
+% weight 
+aircraft.weight.payload = payload;
