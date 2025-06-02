@@ -21,7 +21,7 @@ payload = aircraft.weight.payload;
 
 data = readmatrix('RCAircraftHistoricWeightData.xlsx');
 
-index = data(:,7) > 25;   % finds outliers in gross weight, can change depending on current design
+index = data(:,7) > 20;   % finds outliers in gross weight, can change depending on current design
 data(index,:) = [];
 % index = data(:,7) - data(:,9) > 12;
 % data(index,:) = [];
@@ -63,6 +63,16 @@ fprintf('Add 10%% Error Bound: %.3f lbf\n\n',intersect * 1.1);
 % aircraft
 aircraft.weight.gross = intersect*1.1;
 
+
+% Engine - equation from Gudmundsson chapter 3
+r = .75;   % 75% maximum rated power
+P_BHP = 1/r * aircraft.aero.V_cruise/(550*aircraft.engine.eta_p) * ...
+              aircraft.weight.gross/aircraft.aero.LD;
+
+P_KW = 1/r * aircraft.aero.V_cruise*(0.3048)/(1000*aircraft.engine.eta_p) * ...
+              aircraft.weight.gross*(4.44822)/aircraft.aero.LD;   % conversion to SI
+aircraft.engine.P_BHP = P_BHP;
+aircraft.engine.P_KW = P_KW;
 
 
 end
