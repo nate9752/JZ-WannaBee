@@ -11,8 +11,10 @@
 %
 %   TO DO: 
 %      - Read sizing textbooks to create a more optimized weight and
-%      geometry sizing process. 
-%      - Start inporting XFLR5 data + optimize drag predictor function. 
+%      geometry sizing process.
+%      - Learn how to size propulsion system.
+%      - Preliminary drag buildup function.
+%      - Start inporting XFLR5 data. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,12 +80,20 @@ atmosphere = buildAtmosphere;
 % calculations are preformed. 
 
 aircraft = calcBatteryWeightFraction(aircraft,mission);
-
 aircraft = plotWeightIntersect(aircraft);
-% 
-% [aircraft,geom] = plotConstraintAnalysis(aircraft,engine,aero,atmosphere,geom);
-% 
-% [aircraft,geom] = calcGeom(aircraft,geom);
+aircraft = plotConstraintAnalysis(aircraft,atmosphere);
+
+
+
+% Next, the propulsion system will be sized using some preliminary
+% equations, iteration is encouraged as this will only pick ideal
+% properties based on historical data.
+
+aircraft = sizeProp(aircraft);
+
+
+
+% aircraft = calcGeom(aircraft);
 % aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero);
 % plotVnDiagram(atmosphere,aircraft);
 
