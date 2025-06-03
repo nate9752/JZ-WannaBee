@@ -33,7 +33,7 @@ function aircraft = sizeProp(aircraft)
 %   4. RPM and Motor Kv
 %        RPM = 0.4896 * b^2 - 162.66 * b + 20786
 %        Kv = RPM / NomVoltage
-%        3D performance (lower Kv/RPM,), faster flying (Kv/RPM)
+%        3D performance (lower Kv/RPM,), faster flying (higher Kv/RPM)
 %
 %   5. Propeller 
 %        prop diam = -0.002 * RPM + 35.607 [in]  round down to neasrest whole number
@@ -69,7 +69,7 @@ end
 nomVoltPerCell = 3.7;   % nominal Voltage per cell for lipo batteries
 cells = str2double(strrep(cellcount,'S',''));
 nomVoltage = cells * nomVoltPerCell;
-current  = (wattage / nomVoltage) * 1.2 ;   % 1.2 for factor of safety
+current  = (wattage / nomVoltage) * 1.5 ;   % 1.2 for factor of safety
 current = ceil(current/5) * 5;   % round current to next highest multiple of 5
 
 capacity = linspace(500,6000,10^3);
@@ -85,12 +85,13 @@ label = strjoin({cellcount{1},'battery,',num2str(current),'[A] ESC,'},' ');
 subtitle(label);
 grid on; hold on; 
 
-[~,idx] = min(abs(Crating-30));
+[~,idx] = min(abs(Crating-60));
 capacity = capacity(idx);   % capacity at index of C-rating = 30C
 capacity = ceil(capacity/100)*100;   % rounds to next highest multiple of 100
 Crating = ceil(Crating(idx)/5)*5;
 
-RPM = 0.4896*b^2 - 162.66*b+20786;   % motor RPM
+b_RPM = ceil(b/10)*10;   % rounds wingspan to higher multiple of 5
+RPM = 0.4896*b_RPM^2 - 162.66*b_RPM+20786;   % motor RPM
 Kv = RPM / nomVoltage;
 propDiam = -0.002*RPM + 35.607;   % propeller diameter [in]
 propDiam = floor(propDiam);   % round down to nearest whole number
