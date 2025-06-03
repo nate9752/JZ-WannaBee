@@ -117,4 +117,10 @@ fprintf('Length c/4 wing to c/4 tail %.2f ft\n',Lv);
 fprintf('Fuselage Length %.2f ft, Length Nose to Leading Edge %.2f\n\n',l_fuselage,nose2LE);
 
 
+
+%% Call to plotGeom
+
+plotGeom(aircraft);
+
+
 end
