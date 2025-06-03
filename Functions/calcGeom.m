@@ -114,7 +114,7 @@ fprintf('Wing Span %.2f [ft], Area %.2f [ft^2], Chord %.2f [ft]\n',b,Sref,Sref/b
 fprintf('Horizontal Tail Span %.2f [ft], Area %.2f [ft]^2, Chord %.2f [ft]\n',bh,Sht,ch);
 fprintf('Vertical Tail Span %.2f [ft], Area %.2f [ft]^2, Chord %.2f [ft]\n',bv,Svt,cv);
 fprintf('Length c/4 wing to c/4 tail %.2f ft\n',Lv);
-fprintf('Fuselage Length %.2f ft\n\n',l_fuselage);
+fprintf('Fuselage Length %.2f ft, Length Nose to Leading Edge %.2f\n\n',l_fuselage,nose2LE);
 
 
 end
