@@ -27,24 +27,26 @@ Clmax = 1.4;   % maximum lift coefficient
 
 
 
-%% Preliminary Drag Estimates (No CFD) 
+%% Preliminary Geom Estimates
 % can estimate from prior projects or other areas
 
 components = {'wings', 'fuselage','horztail','verttail'};
 
 % wings 
-b = 3*12;   % wingspan [in]
+b = 3;   % wingspan [in]
 tc_w = 0.12;   % thickness to chord NACA 0012
+lam_w = 1;   % wing taper ratio
 
 % fuselage 
 diam_fuselage = 0.50;   % diameter fuselage [ft]
 
 % horizontal tail - CHANGE AFTER TAILS SIZING 
 tc_ht = 0.12;   % thickness to chord ratio horizontal tail
+lam_ht = 1;   % horizontal tail taper ratio
 
 % vertical tail - CHANGE AFTER TAIL SIZING
 tc_vt = 0.12;   % thickness to chord ratio vertical tail
-
+lam_vt = 1;   % vertical tail taper ratio
 
 
 %% Engine
@@ -58,7 +60,7 @@ eta_m = 0.6;   % motor efficiency
 %                             Sport Flying = 110
 %                             Basic Trainer = 85
 %                             Lightly Loaded Model = 60
-PPL = 85;
+PPL = 100;
 
 
 
@@ -109,12 +111,15 @@ aircraft.geom.components = components;
 
 aircraft.geom.wing.b = b;
 aircraft.geom.wing.tc_w = tc_w;
+aircraft.geom.wing.lam = lam_w;
 
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
 
-aircraft.geom.horztail.tc_h = tc_ht;
+aircraft.geom.horztail.tc_ht = tc_ht;
+aircraft.geom.horztail.lam_ht = lam_ht;
 
-aircraft.geom.verttail.tc_v = tc_vt;
+aircraft.geom.verttail.tc_vt = tc_vt;
+aircraft.geom.verttail.lam_vt = lam_vt;
 
 % weight 
 aircraft.weight.payload = payload;
