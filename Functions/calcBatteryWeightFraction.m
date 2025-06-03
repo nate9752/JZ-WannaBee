@@ -44,7 +44,7 @@ WBwu_W = 10*WBto_W;   % general relationship from class
 % Energy consumption (Wb/W)
 WB_W = WBlf_W + WBtu_W + WBcl_W + WBto_W + WBwu_W;
 % WB_W = 4.2 * WB_W;   % 4.2 max volatage discharge 
-% WB_W = 2 * WB_W;
+WB_W = 2 * WB_W;
 
 fprintf('Weight Fraction Buildup: \n');
 fprintf('1/W * [WB = WBto + WBwu + WBcl + WBlf + WBtu]\n');
