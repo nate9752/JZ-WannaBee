@@ -9,10 +9,18 @@
 %   design build fly, in which me and a group of engineers build an RC
 %   aircraft in my undergrad. 
 %
+%   To use this code, first an aircraft data file must be made, starting
+%   with version 1. This includes basic performance parameters and some
+%   known design criteria. Then, once the preliminary sizing is complete,
+%   an XFLR5 model or CAD can be made to place the known weights in the
+%   aircraft, at which point the aircraft data file can be iterated to
+%   version two containing these weights and their locations. 
+%
+%
 %   TO DO: 
-%      - Read sizing textbooks to create a more optimized weight and
-%      geometry sizing process.
-%      - Learn how to size propulsion system.
+%      - plotGeom function that gives a rough 3D view of aircraft and all
+%      relevent control surfaces. Can update aircraft model to V2 once
+%      XFLR5 data is completed.
 %      - Preliminary drag buildup function.
 %      - Start inporting XFLR5 data. 
 %
@@ -97,6 +105,7 @@ aircraft = calcGeom(aircraft);
 
 % aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero);
 % plotVnDiagram(atmosphere,aircraft);
+% plotGeom(aircraft);
 
 
 
@@ -106,7 +115,5 @@ aircraft = calcGeom(aircraft);
 %% Output 
 
 
-
-
-
 fprintf('\n\nTotal Simulation Time: %.3f\n',toc(timer));
+clear timer;

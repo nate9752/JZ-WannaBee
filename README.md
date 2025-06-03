@@ -1,6 +1,6 @@
 # JZ-WannaBee
-General sizing code for remote control aircraft. Project managers:
-Nate Carey and Noe Castellanos
+General sizing code for remote control aircraft. Project manager:
+Nate Carey
 
 This code will serve as the mothership for all sizing related calculations
 simulations for our remote controlled aircraft project. We hope to create
