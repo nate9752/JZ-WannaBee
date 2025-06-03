@@ -18,7 +18,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear; clc; close all; 
+clear; clc; close all;
+timer = tic();
 
 %% Aircraft Geometry Selection 
 
@@ -74,15 +75,11 @@ atmosphere = buildAtmosphere;
 % This section first calculates a battery weight fraction for the aircraft,
 % then finds the intersection along some historical data -> 
 % Wpl + Wbatt = Wgross - Wempty
-%
 % This data is then used in our constraint matrix to find W/S and W/P
-% Then, some prelimary geometry, drag calculations, and structural 
-% calculations are preformed. 
 
 aircraft = calcBatteryWeightFraction(aircraft,mission);
 aircraft = plotWeightIntersect(aircraft);
 aircraft = plotConstraintAnalysis(aircraft,atmosphere);
-
 
 
 % Next, the propulsion system will be sized using some preliminary
@@ -92,8 +89,24 @@ aircraft = plotConstraintAnalysis(aircraft,atmosphere);
 aircraft = sizeProp(aircraft);
 
 
+% Then, some prelimary geometry, drag calculations, and structural 
+% calculations are preformed. 
 
-% aircraft = calcGeom(aircraft);
+aircraft = calcGeom(aircraft);
+
+
 % aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero);
 % plotVnDiagram(atmosphere,aircraft);
 
+
+
+
+
+
+%% Output 
+
+
+
+
+
+fprintf('\n\nTotal Simulation Time: %.3f\n',toc(timer));
