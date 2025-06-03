@@ -1,4 +1,4 @@
-function aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero)
+function aircraft = calcDragPreliminary(aircraft,atmosphere)
 % calcDragPreliminary
 %   
 %   - This function is a preliminary estimate at the drag our aircraft will
@@ -12,26 +12,26 @@ function aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero)
 
 % Astmosphere
 rho = atmosphere.rho(end);   % density sl/ft^3
-Re_l = rho*(aero.V_cruise) / (atmosphere.mew);   % Re/l ft^-1
+Re_l = rho*(aircraft.aero.V_cruise) / (atmosphere.mu);   % Re/l ft^-1
 
-M = aero.V_cruise/atmosphere.a(end);
+M = aircraft.aero.V_cruise/atmosphere.a(end);
 
 %% Geometry
 
-components = geom.components;
+components = aircraft.geom.components;
 if any(strcmp(components,'wing'))
     % Wings
-    cw = geom.wing.meanchord;   % chord ft
-    df = geom.wing.df;   % wing covered by fuselage
-    Sref = geom.wing.Sref;   % reference area ft^2
-    Lamw = geom.wing.Lamw;   % Lambda (capital) angle deg
-    tc_w = geom.wing.tc_w;   % ratio of thickness to chord 
-    Qfw = geom.wing.Qfw;   
+    cw = aircraft.geom.wing.meanchord;   % chord ft
+    df = aircraft.geom.wing.df;   % wing covered by fuselage
+    Sref = aircraft.geom.wing.Sref;   % reference area ft^2
+    Lam_w = aircraft.geom.wing.Lam_w;   % Lambda (capital) angle deg
+    tc_w = aircraft.geom.wing.tc_w;   % ratio of thickness to chord 
+    Qfw = aircraft.geom.wing.Qfw;   
     
     Rew = Re_l*cw;
     Cfw = 0.455 / (log10(Rew))^2.58;
     Swetw = (Sref-cw*df) * 2 * 1.02;   % wetted wing area [ft^2] 
-    Z = (2-M^2)*cos(Lamw) / sqrt(1-M^2*cos(Lamw));   % sweep correction factor 
+    Z = (2-M^2)*cos(Lam_w) / sqrt(1-M^2*cos(Lam_w));   % sweep correction factor 
     FFw = 1 + Z*(tc_w) + 100*(tc_w)^4;   % form factor 
     
     Cdow = FFw*Cfw*Swetw*Qfw/Sref;   % parasitic drag coefficient wing
@@ -40,9 +40,9 @@ end
 
 if any(strcmp(components,'fuselage'))
     % fuselage 
-    lf = geom.fuselage.lf;   % length ft
-    Df = geom.fuselage.Df;   % diameter ft
-    Qff = geom.fuselage.Qff; 
+    lf = aircraft.geom.fuselage.lf;   % length ft
+    Df = aircraft.geom.fuselage.diam_fuselage;   % diameter ft
+    Qff = aircraft.geom.fuselage.Qff; 
     
     Ref = Re_l * lf;
     Cff = 0.455 / (log10(Ref))^2.58;   % skin friction coefficient 
@@ -56,44 +56,44 @@ end
 
 if any(strcmp(components,'horztail'))
     % horizontal tail 
-    ch = geom.horztail.chord;   % chord ft
-    Sh = geom.horztail.Sh;   % horizontal tail area ft^2
-    Lamh = geom.horztail.Lamh;   % Lambda of horizontal tail (rad)
-    tc_h = geom.horztail.Lamh;   % thickness to chord ratio horizontal tail
-    Qf_htail = geom.horztail.Qf_htail;
+    ch = aircraft.geom.horztail.chord;   % chord ft
+    Sh = aircraft.geom.horztail.Sh;   % horizontal tail area ft^2
+    Lam_ht = aircraft.geom.horztail.Lam_ht;   % Lambda of horizontal tail (rad)
+    tc_ht = aircraft.geom.horztail.tc_ht;   % thickness to chord ratio horizontal tail
+    Qf_ht = aircraft.geom.horztail.Qf_ht;
     
-    Re_htail = Re_l*cw;
-    Cf_htail = 0.455 / (log10(Re_htail))^2.58;
-    Swet_htail = Sh * 2 * 1.02;   % wetted wing area [ft^2] 
-    Z = M^2*cos(Lamh) / sqrt(1-M^2*cos(Lamh));   % sweep correction factor 
-    FF_htail = 1 + Z*(tc_h) + 100*(tc_h)^4;   % form factor 
+    Re_ht = Re_l*cw;
+    Cf_ht = 0.455 / (log10(Re_ht))^2.58;
+    Swet_ht = Sh * 2 * 1.02;   % wetted wing area [ft^2] 
+    Z = M^2*cos(Lam_ht) / sqrt(1-M^2*cos(Lam_ht));   % sweep correction factor 
+    FF_ht = 1 + Z*(tc_ht) + 100*(tc_ht)^4;   % form factor 
     
-    Cdo_htail = FF_htail*Cf_htail*Swet_htail*Qf_htail/Sref;   % parasitic drag coefficient
-    feh = Cdo_htail * Sref;   % flat plate equivalent area
+    Cdo_ht = FF_ht*Cf_ht*Swet_ht*Qf_ht/Sref;   % parasitic drag coefficient
+    feh = Cdo_ht * Sref;   % flat plate equivalent area
 end
 
 if any(strcmp(components,'verttail'))
     % vertical tail
-    cv = geom.verttail.chord;   % chord ft
-    Sv = geom.verttail.Sv;   % vertical tail area ft^2
-    Lamv = geom.verttail.Lamv;   % Lambda of vertical tail (rad)
-    tc_v = geom.verttail.tc_v;   % thickness to chord ratio vertical tail
-    Qf_vtail = geom.verttail.Qf_vtail;
+    cv = aircraft.geom.verttail.chord;   % chord ft
+    Sv = aircraft.geom.verttail.Sv;   % vertical tail area ft^2
+    Lam_vt = aircraft.geom.verttail.Lam_vt;   % Lambda of vertical tail (rad)
+    tc_vt = aircraft.geom.verttail.tc_vt;   % thickness to chord ratio vertical tail
+    Qf_vt = aircraft.geom.verttail.Qf_vt;
     
-    Re_vtail = Re_l*cv;
-    Cf_vtail = 0.455 / (log10(Re_vtail))^2.58;
-    Swet_vtail = Sv * 2 * 1.02;   % wetted wing area [ft^2] 
-    Z = M^2*cos(Lamv) / sqrt(1-M^2*cos(Lamv));   % sweep correction factor 
-    FF_vtail = 1 + Z*(tc_v) + 100*(tc_v)^4;   % form factor 
+    Re_vt = Re_l*cv;
+    Cf_vt = 0.455 / (log10(Re_vt))^2.58;
+    Swet_vt = Sv * 2 * 1.02;   % wetted wing area [ft^2] 
+    Z = M^2*cos(Lam_vt) / sqrt(1-M^2*cos(Lam_vt));   % sweep correction factor 
+    FF_vt = 1 + Z*(tc_vt) + 100*(tc_vt)^4;   % form factor 
     
-    Cdo_vtail = FF_vtail*Cf_vtail*Swet_vtail*Qf_vtail/Sref;   % parasitic drag coefficient
-    fev = Cdo_vtail * Sref;   % flat plate equivalent area
+    Cdo_vt = FF_vt*Cf_vt*Swet_vt*Qf_vt/Sref;   % parasitic drag coefficient
+    fev = Cdo_vt * Sref;   % flat plate equivalent area
 end
 
-aero.wing.Cdo = Cdow;
-aero.fuselage.Cdo = Cdof;
-aero.horztail.Cdo = Cdo_htail;
-aero.verttail.Cdo = Cdo_vtail;
+aircraft.aero.wing.Cdo = Cdow;
+aircraft.aero.fuselage.Cdo = Cdof;
+aircraft.aero.horztail.Cdo = Cdo_ht;
+aircraft.aero.verttail.Cdo = Cdo_vt;
 
 
 
@@ -101,7 +101,7 @@ aero.verttail.Cdo = Cdo_vtail;
 
 Cdo = 0;
 for i = 1:length(components)
-    Cdo = Cdo + aero.(string(components(i))).Cdo;
+    Cdo = Cdo + aircraft.aero.(string(components(i))).Cdo;
 end
 
 Cdo_leakexcres = 0.08*Cdo;   % 8% of Cdo is excressence and leak drag
@@ -109,20 +109,20 @@ Cdo = Cdo + Cdo_leakexcres;
 
 
 %% Induced Drag 
-V_cruise = aero.V_cruise;
+V_cruise = aircraft.aero.V_cruise;
 
 V = V_cruise;
 q = 1/2 * V.^2 * atmosphere.rho(end);
-Cl = weight.gross ./ (q*geom.wing.Sref);
+Cl = aircraft.weight.gross ./ (q*aircraft.geom.wing.Sref);
 
 
 % Oswald Efficiency Factor
 % e = 0.70;   % lower historical bound  
 % e = 0.85;   % upper historical bound 
 % e = 0.98 * (1-Df/b);   % Analytical Estimate
-e = 0.74;   % lower historical bound
+e = aircraft.aero.e;
 
-Cdi = Cl.^2 ./ (pi*e*aircraft.wingAR);   % induced drag (drag due to lift)
+Cdi = Cl.^2 ./ (pi*e*aircraft.geom.wing.AR);   % induced drag (drag due to lift)
 
 
 
@@ -134,17 +134,17 @@ Cdc = 0;   % not flying fast enough
 %% Total Drag Coefficient and Drag
 
 Cd = Cdo + Cdi + Cdc;   % total coefficient of drag
-% D = Cd*q*geom.wing.Sref;   % total drag [lbf]
+D = Cd*q*aircraft.geom.wing.Sref;   % total drag [lbf]
 
 
 %% Display Outputs to User
 
 fprintf('\n-------Preliminary Drag Estimations-------\n');
-fprintf('\nParasitic Drag (Cdo) = %.5f\n',Cdo);
+fprintf('Parasitic Drag (Cdo) = %.5f\n',Cdo);
 fprintf('Induced Drag at Cruise(Cdi) = %.5f\n',Cdi);
 fprintf('Compressability Drag (Cdc) = %.5f\n',Cdc);
 fprintf('Total Cd = %.5f\n',Cd);
-% fprintf('Total Drag at Cruise = %.5f [lbf]\n\n\n',D);
+fprintf('Total Drag at Cruise = %.5f [lbf]\n',D);
 
 
 
@@ -161,16 +161,15 @@ fprintf('Total Cd = %.5f\n',Cd);
 % aero.Climb.Cdc = Cdc;
 % aero.Climb.Cd = Cd(2);
 % 
-aero.Cdo = Cdo;
-aero.Cdi = Cdi;
-aero.Cdc = Cdc;
-aero.Cd = Cd;
+aircraft.aero.Cdo = Cdo;
+aircraft.aero.Cdi = Cdi;
+aircraft.aero.Cdc = Cdc;
+aircraft.aero.Cd = Cd;
 
-
-aero.wing.fe = few;
-aero.fuselage.fe = fef;
-aero.horztail.fe = feh;
-aero.verttail.fe = fev;
+aircraft.aero.wing.fe = few;
+aircraft.aero.fuselage.fe = fef;
+aircraft.aero.horztail.fe = feh;
+aircraft.aero.verttail.fe = fev;
 
 
 end
