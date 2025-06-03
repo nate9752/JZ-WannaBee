@@ -30,23 +30,33 @@ Clmax = 1.4;   % maximum lift coefficient
 %% Preliminary Geom Estimates
 % can estimate from prior projects or other areas
 
-components = {'wings', 'fuselage','horztail','verttail'};
+components = {'wing', 'fuselage','horztail','verttail'};
 
 % wings 
 b = 3;   % wingspan [in]
 tc_w = 0.12;   % thickness to chord NACA 0012
-lam_w = 1;   % wing taper ratio
+lambda_w = 1;   % wing taper ratio
+df = 0;   % wing covered by fuselage; 0 b/c high wing config
+Qfw = 1;   % high wing config interference value
+Lam_w = 0 * pi/180;   % sweep angle (capital lambda) wing
+
 
 % fuselage 
-diam_fuselage = 0.50;   % diameter fuselage [ft]
+diam_fuselage = 0.25;   % diameter fuselage [ft]
+Qff = 1;   % interference factor fuselage
 
 % horizontal tail - CHANGE AFTER TAILS SIZING 
 tc_ht = 0.12;   % thickness to chord ratio horizontal tail
-lam_ht = 1;   % horizontal tail taper ratio
+lambda_ht = 1;   % horizontal tail taper ratio
+Qf_ht = 1;   % interference factor horizontal tail
+Lam_ht = 0 * pi/180;    % sweep angle (capital lambda) horizontal tail
 
 % vertical tail - CHANGE AFTER TAIL SIZING
 tc_vt = 0.12;   % thickness to chord ratio vertical tail
-lam_vt = 1;   % vertical tail taper ratio
+lambda_vt = 1;   % vertical tail taper ratio
+Qf_vt = 1;   % interference factor vertical tail
+Lam_vt = 0 * pi/180;   % sweep angle (capital lambda) vertical tail
+
 
 
 %% Engine
@@ -111,15 +121,23 @@ aircraft.geom.components = components;
 
 aircraft.geom.wing.b = b;
 aircraft.geom.wing.tc_w = tc_w;
-aircraft.geom.wing.lam = lam_w;
+aircraft.geom.wing.lam = lambda_w;
+aircraft.geom.wing.df = df;
+aircraft.geom.wing.Qfw = Qfw;
+aircraft.geom.wing.Lam_w = Lam_w;
 
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
+aircraft.geom.fuselage.Qff = Qff;
 
 aircraft.geom.horztail.tc_ht = tc_ht;
-aircraft.geom.horztail.lam_ht = lam_ht;
+aircraft.geom.horztail.lam_ht = lambda_ht;
+aircraft.geom.horztail.Qf_ht = Qf_ht;
+aircraft.geom.horztail.Lam_ht = Lam_ht;
 
 aircraft.geom.verttail.tc_vt = tc_vt;
-aircraft.geom.verttail.lam_vt = lam_vt;
+aircraft.geom.verttail.lam_vt = lambda_vt;
+aircraft.geom.verttail.Qf_vt = Qf_vt;
+aircraft.geom.verttail.Lam_vt = Lam_vt;
 
 % weight 
 aircraft.weight.payload = payload;
