@@ -53,7 +53,7 @@ legend('show','location','Northwest');
  
 % Find Intersect 
 intersect = (payload - p1(2)) / (p1(1) - WB_W);
-fprintf('-------AIAA Estimations-------\n');
+fprintf('\n-------AIAA Estimations-------\n');
 fprintf('Gross Weight Intersection: %.3f lbf\n',intersect)
 fprintf('Add 10%% Error Bound: %.3f lbf\n\n',intersect * 1.1);
 
