@@ -26,7 +26,7 @@ function aircraft = sizeProp(aircraft)
 %         *** Ensure Capacity is in Ah, not mAh ***
 %
 %   3. Current (Amperage)
-%       Current = Wattage/NomVoltage    NomVoltage = Cells*NomVoltage
+%       Current = Wattage/NomVoltage    NomVoltage = Cells * NomVoltage per cell
 %                                                    Cells * 3.7 (for lipo) 
 %       Current * 1.2 (for safety)  --> gives amperage for ESC
 %
@@ -45,21 +45,79 @@ function aircraft = sizeProp(aircraft)
 
 weight = aircraft.weight.gross;
 PPL = aircraft.engine.PPL;
-b = aircraft.geom.wing.b;
+b = aircraft.geom.wing.b * 12;
 
-Wattage = weight * PPL;   % Watts
+wattage = weight * PPL;   % Watts
 
-% if structure to determine cell count
-cellcount = '2S';
+% determine cell count based on wingspan
+if b > 30 && b <= 40
+    cellcount = "2S";
+elseif b > 40 && b <= 55
+    cellcount = "3S";
+elseif b > 55 && b <= 68
+    cellcount = "4S";
+elseif b > 68 && b <= 84
+    cellcount = "6S";
+elseif b > 84 && b <= 96
+    cellcount = "8S";
+elseif b > 96 && b <= 105
+    cellcount = "10";
+elseif b > 105
+    cellcount = "12S";
+end
 
+nomVoltPerCell = 3.7;   % nominal Voltage per cell for lipo batteries
+cells = str2double(strrep(cellcount,'S',''));
+nomVoltage = cells * nomVoltPerCell;
+current  = (wattage / nomVoltage) * 1.2 ;   % 1.2 for factor of safety
+current = ceil(current/5) * 5;   % round current to next highest multiple of 5
 
+capacity = linspace(500,6000,10^3);
+Crating = current./(capacity./1000) * 2;
+
+% Plot C-rating vs. Capacity to select Capacity 
+% C-rating indicates maximum discharge rate, 30C is reccomended for RC planes
+figure;
+plot(capacity,Crating);
+xlabel('Capacity [mAh]'); ylabel('C-rating [C]');
+title('Propulsion Sizing - C-rating vs. Capacity');
+label = strjoin({cellcount{1},'battery,',num2str(current),'[A] ESC,'},' ');
+subtitle(label);
+grid on; hold on; 
+
+[~,idx] = min(abs(Crating-30));
+capacity = capacity(idx);   % capacity at index of C-rating = 30C
+capacity = ceil(capacity/100)*100;   % rounds to next highest multiple of 100
+Crating = ceil(Crating(idx)/5)*5;
 
 RPM = 0.4896*b^2 - 162.66*b+20786;   % motor RPM
+Kv = RPM / nomVoltage;
 propDiam = -0.002*RPM + 35.607;   % propeller diameter [in]
-propPitch = propDiam/1.57;
+propDiam = floor(propDiam);   % round down to nearest whole number
+propPitch = propDiam/1.57;   % propeller pitch [in]
+propPitch = ceil(propPitch*2)/2;   % round up to nearest half
 
 
 
+%% Display Outputs
+fprintf('\n------Propulsion Sizing------\n');
+fprintf(strjoin({cellcount{1},'LiPo Battery,',num2str(capacity),'[mAh]'},' '));
+fprintf('\nMotor RPM = %.0f, Kv = %.0f\n',RPM,Kv);
+fprintf('Propeller Diameter = %.1f [in], Propeller Pitch = %.1f [in]\n',propDiam,propPitch)
+fprintf('Max Discharge (C-rating) = %.0f C, Current = %.0f [A]\n',Crating,current);
+
+
+%% Packaging 
+
+aircraft.engine.wattage = wattage;
+aircraft.engine.cellcount = cellcount;
+aircraft.engine.current = current;
+aircraft.engine.capacity = capacity;
+aircraft.engine.Crating = Crating;
+aircraft.engine.RPM = RPM;
+aircraft.engine.Kv = Kv;
+aircraft.engine.propDiam = propDiam;
+aircraft.engine.propPitch = propPitch;
 
 
 end
