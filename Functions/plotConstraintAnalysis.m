@@ -110,7 +110,7 @@ plot(WS_design,WP_design,'*','DisplayName','Design Point','linewidth',1);
 
 legend('show','location','northwest');
 
-fprintf('-------Constraint Diagram-------\n');
+fprintf('\n-------Constraint Diagram-------\n');
 fprintf('Design Wing Loading W/S = %.3f\n',WS_design);
 % fprintf('Design Power Loading W/P = %.3f\n\n',WP_design);
 fprintf('Design Thrust to Weight T/W = %.3f\n\n',WP_design);
@@ -122,7 +122,7 @@ fprintf('Design Thrust to Weight T/W = %.3f\n\n',WP_design);
 % aircraft
 aircraft.geom.wing.WS_design = WS_design;
 aircraft.engine.WP_design = WP_design;
-aircraft.geom.wing.Sref = aircraft.weight.gross / (WS_design/144);
+aircraft.geom.wing.Sref = aircraft.weight.gross / (WS_design);
 
 % Geom (with AR based on desired wingspan)
 Sref = aircraft.geom.wing.Sref;
@@ -131,11 +131,11 @@ if aircraft.geom.wing.b^2 / aircraft.geom.wing.Sref < 5
     c = Sref / b;
 
     aircraft.geom.wing.b = b;
-    aircraft.geom.wing.chord = c;
+    aircraft.geom.wing.meanchord = c;
     aircraft.geom.wing.AR = aircraft.geom.wing.b^2 / Sref;
 
 else % if aspect ratio falls between 5-7, use standard wingspan from aircraft data file
-    aircraft.geom.wing.chord = Sref / aircraft.b;
+    aircraft.geom.wing.meanchord = Sref / aircraft.b;
     aircraft.geom.wing.AR = aircraft.b^2 / Sref;
 end
 
