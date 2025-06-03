@@ -34,6 +34,7 @@ timer = tic();
 aircraft_input = "RCTB_V1.m";   % first RC tube and wing project, Version 1
 
 
+
 %% Propulsion Selection 
 
 % Battery Seleciton 
@@ -101,9 +102,8 @@ aircraft = sizeProp(aircraft);
 % calculations are preformed. 
 
 aircraft = calcGeom(aircraft);
+aircraft = calcDragPreliminary(aircraft,atmosphere);
 
-
-% aero = calcDragPreliminary(aircraft,atmosphere,geom,weight,aero);
 % plotVnDiagram(atmosphere,aircraft);
 % plotGeom(aircraft);
 
