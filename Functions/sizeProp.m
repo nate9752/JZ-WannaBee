@@ -110,15 +110,15 @@ fprintf('Max Discharge (C-rating) = %.0f C, Current = %.0f [A]\n',Crating,curren
 
 %% Packaging 
 
-aircraft.engine.wattage = wattage;
-aircraft.engine.cellcount = cellcount;
-aircraft.engine.current = current;
-aircraft.engine.capacity = capacity;
-aircraft.engine.Crating = Crating;
-aircraft.engine.RPM = RPM;
-aircraft.engine.Kv = Kv;
-aircraft.engine.propDiam = propDiam;
-aircraft.engine.propPitch = propPitch;
+aircraft.engine.preliminary.wattage = wattage;
+aircraft.engine.preliminary.cellcount = cellcount;
+aircraft.engine.preliminary.current = current;
+aircraft.engine.preliminary.capacity = capacity;
+aircraft.engine.preliminary.Crating = Crating;
+aircraft.engine.preliminary.RPM = RPM;
+aircraft.engine.preliminary.Kv = Kv;
+aircraft.engine.preliminary.propDiam = propDiam;
+aircraft.engine.preliminary.propPitch = propPitch;
 
 
 end
