@@ -9,12 +9,19 @@
 %   design build fly, in which me and a group of engineers build an RC
 %   aircraft in my undergrad. 
 %
-%   To use this code, first an aircraft data file must be made, starting
-%   with version 1. This includes basic performance parameters and some
-%   known design criteria. Then, once the preliminary sizing is complete,
-%   an XFLR5 model or CAD can be made to place the known weights in the
-%   aircraft, at which point the aircraft data file can be iterated to
-%   version two containing these weights and their locations. 
+%   To use this code:
+%      1. An aircraft data file must be made, starting
+%      with version 1. This includes basic performance parameters and some
+%      known design criteria. 
+%      2. With initial sizing complete, the user can then size the 
+%      propulsion system using eCalc to select specific instramentation. 
+%      Then, XFLR5 or open VSP can be used to optimize the aerodynamic 
+%      design.
+%      3. A CAD model can be made to aid the manufacturing process and to
+%      finalize the weights and locations of all systems. Along the way,
+%      different versions of the aircraft data file can be made with flags
+%      in place to only run the functions that are required at the current
+%      stage of the design. 
 %
 %
 %   TO DO: 
@@ -23,11 +30,16 @@
 %      XFLR5 data is completed.
 %      - Preliminary drag buildup function.
 %      - Start inporting XFLR5 data. 
+%      - CAD for more accfurate weights analysis. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; clc; close all;
 timer = tic();
+
+cd(fileparts(mfilename("fullpath")))
+addpath(genpath(pwd));
+
 
 %% Aircraft Geometry Selection 
 
@@ -38,16 +50,16 @@ aircraft_input = "RCTB_V1.m";   % first RC tube and wing project, Version 1
 %% Propulsion Selection 
 
 % Battery Seleciton 
-battery_input = "generic_battery";
+battery_input = "LiPo 2200mAh 45-60C";
 
 % ESC Selection 
-ESC_input = "generic_ESC";
+ESC_input = "max 50A";
 
 % Motor Selection
-motor_input = "generic_motor";
+motor_input = "Cobra C-2808/16 (1780)";
 
 % Propeller Selection
-propeller_input = "generic_propeller";
+propeller_input = "APC Electric E 8x5";
 
 % Servo Selection 
 servo_input = "generic_servo";
