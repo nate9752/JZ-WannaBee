@@ -16,10 +16,8 @@ lam_vt = aircraft.geom.verttail.lam_vt;
 lam = aircraft.geom.wing.lam;
 
 % Wing 
-% Nose to LE wing is 40% of fuselage
 cr = 2*Sref / (b*(1+lam));
 ct = lam*cr;
-
 
 % Fuselage Sizing
 l_fuselage_homebuilt = 3.5*gross^0.23;   % Homebuilt - composite, length fuselage
@@ -32,7 +30,8 @@ l_fuselage = l_fuselage_homebuilt;   % converts to inches
 ARht = 0.5 * AR;
 
 Cht = 0.6;   % average for horizontal tail coefficient
-Lh = 0.6*l_fuselage;   % length from 1/4c wing to 1/4t
+% Nose to LE wing is 40% of fuselage
+Lh = 0.6*l_fuselage;   % length from 1/4c wing to 1/4c tail
 Sht = Cht*cw*Sref/Lh;   % area of horizontal tail
 
 bh = sqrt(Sht * ARht);   % span horizontal tail
@@ -72,6 +71,7 @@ aircraft.geom.wing.taper = lam;
 aircraft.geom.wing.cr = cr;
 aircraft.geom.wing.ct = ct;
 aircraft.geom.wing.nose2LE = nose2LE;
+% aircraft.geom.wing.wingVolume = WingVolume;
 
 % fuselage
 aircraft.geom.fuselage.lf = l_fuselage;
