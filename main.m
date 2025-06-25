@@ -1,6 +1,6 @@
 % JZ WannaBee
 %
-%   Authors: Nate Carey, Noe Castellanos
+%   Authors: Nate Carey
 %
 %   This code will serve as the center of our aircraft sizing caluclations,
 %   as well as our general performance analysis and trade studies. This 
@@ -30,7 +30,7 @@
 %      XFLR5 data is completed.
 %      - Preliminary drag buildup function.
 %      - Start inporting XFLR5 data. 
-%      - CAD for more accfurate weights analysis. 
+%      - CAD for more accurate weights analysis. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
