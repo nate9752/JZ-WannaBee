@@ -135,8 +135,8 @@ if aircraft.geom.wing.b^2 / aircraft.geom.wing.Sref < 5
     aircraft.geom.wing.AR = aircraft.geom.wing.b^2 / Sref;
 
 else % if aspect ratio falls between 5-7, use standard wingspan from aircraft data file
-    aircraft.geom.wing.meanchord = Sref / aircraft.b;
-    aircraft.geom.wing.AR = aircraft.b^2 / Sref;
+    aircraft.geom.wing.meanchord = Sref / aircraft.geom.wing.b;
+    aircraft.geom.wing.AR = aircraft.geom.wing.b^2 / Sref;
 end
 
 

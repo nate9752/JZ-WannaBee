@@ -23,6 +23,8 @@ data = readmatrix('RCAircraftHistoricWeightData.xlsx');
 
 index = data(:,7) > 20;   % finds outliers in gross weight, can change depending on current design
 data(index,:) = [];
+index = data(:,7) < 4;   % finds outliers in gross weight, can change depending on current design
+data(index,:) = [];
 % index = data(:,7) - data(:,9) > 12;
 % data(index,:) = [];
 index = data(:,7) - data(:,9) < 0.5;   % finds planes with no battery or playload
