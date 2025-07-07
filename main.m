@@ -28,7 +28,6 @@
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces. Can update aircraft model to V2 once
 %      XFLR5 data is completed.
-%      - Preliminary drag buildup function.
 %      - Start inporting XFLR5 data. 
 %      - CAD for more accurate weights analysis. 
 %
@@ -117,8 +116,12 @@ aircraft = calcGeom(aircraft);
 aircraft = calcDragPreliminary(aircraft,atmosphere);
 
 % plotVnDiagram(atmosphere,aircraft);
-% plotGeom(aircraft);
 
+
+% At this stage a CAD model can be developed and a more detailed weight 
+% breakdown and systems view can be created.
+
+aircraft = buildWeight(aircraft);
 
 
 
