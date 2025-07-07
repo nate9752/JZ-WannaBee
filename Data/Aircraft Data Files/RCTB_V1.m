@@ -8,6 +8,22 @@
 
 aircraft = struct();
 
+%% Build Material (can fill out later once a build process is selected)
+
+fuselageMaterial = 'PLA';   % Foam, Wood, PLA
+fuselageDensity = 77.4107;   % [lbf/ft^3]
+aeroMaterial = 'PLA';   % Foam, Wood, PLA
+aeroDensity = 77.4107;   % [lbf/ft^3]
+
+% Volumes - for now, I am assuming a 4% infil. As the CAD develops further
+% I will update these values. 
+fuselageVolume = 0.07*0.10;   % [ft^3]
+wingVolume = 0.19*0.10;   % [ft^3]
+horztailVolume = 0.016*0.10;   % [ft^3]
+verttailVolume = 0.002*0.10;   % [ft^3]
+
+
+
 %% Desired Flight Conditions
 
 V_cruise = 60;   % cruise speed [ft/s]
@@ -58,6 +74,9 @@ Qf_vt = 1;   % interference factor vertical tail
 Lam_vt = 0 * pi/180;   % sweep angle (capital lambda) vertical tail
 
 
+% Landing Gear 
+landingGearFlag = 0;
+
 
 %% Engine
 
@@ -74,9 +93,13 @@ PPL = 100;
 
 
 
-%% Weights (when concept is more developed)
+%% Weights (Can fill out once a CAD model is developed)
 
 payload = 0;   % [lbf]
+fuselageWeight = fuselageVolume * fuselageDensity;
+wingWeight = wingVolume * aeroDensity;
+horztailWeight = horztailVolume * aeroDensity;
+verttailWeight = verttailVolume * aeroDensity;
 
 
 
@@ -98,6 +121,11 @@ aircraft.estimates.wingspan = b;
 aircraft.estimates.rho_b = rho_b;
 aircraft.estimates.eta_p = eta_p;
 aircraft.estimates.eta_m = eta_m;
+
+
+% build material 
+aircraft.build.bodyMaterial = fuselageMaterial;
+aircraft.build.aeroMaterial = aeroMaterial;
 
 % engine 
 aircraft.engine.rho_b = rho_b;
@@ -139,5 +167,11 @@ aircraft.geom.verttail.lam_vt = lambda_vt;
 aircraft.geom.verttail.Qf_vt = Qf_vt;
 aircraft.geom.verttail.Lam_vt = Lam_vt;
 
+aircraft.geom.landingGearFlag = landingGearFlag;
+
 % weight 
 aircraft.weight.payload = payload;
+aircraft.weight.sum.fuselage = fuselageWeight;
+aircraft.weight.sum.wing = wingWeight;
+aircraft.weight.sum.horztail = horztailWeight;
+aircraft.weight.sum.verttail = verttailWeight;
