@@ -7,6 +7,9 @@ function plotGeom(aircraft)
 %   - Current version doesn't take into account taper ratios of wing or 
 %     tails, assumes both have taper ratio of 1 (rectangular).
 %
+%   ** Currently this code supports a 2D view of the aircraft. Future
+%   iterations can support a 3D model 
+%
 %% Unpackage Aircraft Geometry
 
 b = aircraft.geom.wing.b;
@@ -30,7 +33,7 @@ fusulagey = [-r_fuselage -r_fuselage r_fuselage r_fuselage -r_fuselage];
 htLE = lf - c_ht;   % horizontal tail leading edge 
 htTE = lf;
 htailx = [htLE htTE htTE htLE htLE];
-htaily = [-b_ht -b_ht b_ht b_ht -b_ht];
+htaily = [-b_ht/2 -b_ht/2 b_ht/2 b_ht/2 -b_ht/2];
 
 % Vertical Tail
 vtLE = htLE;
@@ -46,25 +49,9 @@ aircraftGeomPlot = figure();
 % wingAirfoil = c * readmatrix('naca2412.dat');
 LE = nose2LE;
 TE = nose2LE + c;
-% foils = [-b -b/2 b/2 b];
-% wingx = []; wingy = []; wingz = [];
-% for i = 1:length(foils)
-%     wingy = [wingy linspace(foils(i),foils(i),length(wingAirfoil(:,1)))];
-%     wingx = [wingx; wingAirfoil(:,1)];
-%     wingz = [wingz; wingAirfoil(:,2)];
-% end
-% plot3(wingAirfoil(:,1),linspace(b,b,length(wingAirfoil(:,1))),wingAirfoil(:,2),'r');
 hold on; grid on; axis equal;
-% 
-% plot3(wingAirfoil(:,1),linspace(b/2,b/2,length(wingAirfoil(:,1))),wingAirfoil(:,2),'r');
-% plot3(wingAirfoil(:,1),linspace(-b/2,-b/2,length(wingAirfoil(:,1))),wingAirfoil(:,2),'r');
-% plot3(wingAirfoil(:,1),linspace(-b,-b,length(wingAirfoil(:,1))),wingAirfoil(:,2),'r');
-% plot3([LE LE],[0 0],[0 0]);
-% foil1 = 
 wingx = [LE TE TE LE LE];
-wingy = [-b -b b b -b];
-
-% plot3(wingx,wingy',wingz,'r');
+wingy = [-b/2 -b/2 b/2 b/2 -b/2];
 
 % Plot Fusulage
 
