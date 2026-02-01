@@ -25,11 +25,18 @@
 %
 %
 %   TO DO: 
+%      - Update constraint diagram and make initial guesses better (use
+%      AAIA data).
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces. Can update aircraft model to V2 once
 %      XFLR5 data is completed.
 %      - Start inporting XFLR5 data. 
 %      - CAD for more accurate weights analysis. 
+%      ---- Battery lifespan analysis. Find a way to simulate flight to
+%      determine cruise endurance. 
+%      - OpenVSP capabilities. Add .des files to make small changes to
+%      design parameters and update VSP aero models. maybe see if this can
+%      be done in XFLR5.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -38,6 +45,13 @@ timer = tic();
 
 cd(fileparts(mfilename("fullpath")))
 addpath(genpath(pwd));
+
+
+%% Flags
+
+flight_flag = 0;   % set to true to run a mission
+openVSP_flag = 0;   % set to true to run OpenVSP simulation
+
 
 
 %% Aircraft Geometry Selection 
@@ -78,16 +92,16 @@ mission_input = "fiveMinuteFlight.m";
 inputs = loadInputs(aircraft_input, battery_input, ESC_input, motor_input,...
                     propeller_input, servo_input, mission_input);
 
-mission = loadMission(inputs);
-aircraft = loadAircraft(inputs);
-aircraft = loadEngine(inputs, aircraft);
-aircraft = loadControls(inputs, aircraft);
-aircraft = loadAero(inputs, aircraft);
+mission = loadMission(inputs);   % Loads Mission Details
+aircraft = loadAircraft(inputs);   % Loads Aircraft Input File 
+aircraft = loadEngine(inputs, aircraft);   % Loads Propulsion System
+aircraft = loadControls(inputs, aircraft);   % Loads Control Surface Information
+aircraft = loadAero(inputs, aircraft);   % Loads Aerodynamic Data
 
 
 %% Load Atmosphere
 
-atmosphere = buildAtmosphere;
+atmosphere = buildAtmosphere;   % Standard Atmosphere Structure
 
 
 %% General Sizing 
@@ -107,6 +121,7 @@ aircraft = plotConstraintAnalysis(aircraft,atmosphere);
 % properties based on historical data.
 
 aircraft = sizeProp(aircraft);
+aircraft = loadPropMap(inputs, aircraft);
 
 
 % Then, some prelimary geometry, drag calculations, and structural 
@@ -123,6 +138,15 @@ aircraft = calcDragPreliminary(aircraft,atmosphere);
 
 aircraft = buildWeight(aircraft);
 
+
+
+%% Fly Standard Mission 
+
+if flight_flag
+
+    mission = runMission(aircraft,mission);
+
+end
 
 
 
