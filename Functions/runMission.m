@@ -10,6 +10,8 @@ function [aircraft,mission] = runMission(aircraft,mission)
 
 %% Takeoff
 
+mission = calcTakeoff(aircraft,mission);
+
 
 %% Climb 
 
