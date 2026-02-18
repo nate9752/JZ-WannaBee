@@ -144,7 +144,7 @@ aircraft = buildWeight(aircraft);
 
 if flight_flag
 
-    mission = runMission(aircraft,mission);
+    mission = runMission(aircraft,mission,atmosphere);
 
 end
 
