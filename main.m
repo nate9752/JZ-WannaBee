@@ -50,7 +50,7 @@ addpath(genpath(pwd));
 %% Flags
 
 flight_flag = 0;   % set to true to run a mission
-openVSP_flag = 0;   % set to true to run OpenVSP simulation
+openVSP_flag = 1;   % set to true to run OpenVSP simulation
 
 
 
@@ -140,6 +140,16 @@ aircraft = buildWeight(aircraft);
 
 
 
+%% Run Open VSP
+
+if openVSP_flag
+
+    aircraft = runVSP(aircraft)
+
+end
+
+
+
 %% Fly Standard Mission 
 
 if flight_flag
@@ -147,7 +157,6 @@ if flight_flag
     mission = runMission(aircraft,mission,atmosphere);
 
 end
-
 
 
 
