@@ -144,7 +144,7 @@ aircraft = buildWeight(aircraft);
 
 if openVSP_flag
 
-    aircraft = runVSP(aircraft)
+    aircraft = runVSP(aircraft);
 
 end
 
