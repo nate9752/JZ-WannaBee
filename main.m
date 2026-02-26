@@ -30,13 +30,10 @@
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces. Can update aircraft model to V2 once
 %      XFLR5 data is completed.
-%      - Start inporting XFLR5 data. 
 %      - CAD for more accurate weights analysis. 
-%      ---- Battery lifespan analysis. Find a way to simulate flight to
-%      determine cruise endurance. 
-%      - OpenVSP capabilities. Add .des files to make small changes to
-%      design parameters and update VSP aero models. maybe see if this can
-%      be done in XFLR5.
+%      - Continue developing openVSP modeling. Need: 
+%             - Body, vert tail, horz tail, location based geom for all
+%      - Develop takeoff, climb, cruise, and descent simulation functions.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,7 +47,7 @@ addpath(genpath(pwd));
 %% Flags
 
 flight_flag = 0;   % set to true to run a mission
-openVSP_flag = 1;   % set to true to run OpenVSP simulation
+openVSP_flag = 0;   % set to true to run OpenVSP simulation
 
 
 
@@ -145,6 +142,10 @@ aircraft = buildWeight(aircraft);
 if openVSP_flag
 
     aircraft = runVSP(aircraft);
+
+else 
+
+    aircraft = readVSPdata(aircraft);
 
 end
 

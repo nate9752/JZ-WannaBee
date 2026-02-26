@@ -68,6 +68,8 @@ writelines(lines,filename);
 
 
 data = readtable(strcat(vspName,".polar.txt"),'VariableNamingRule','preserve');
+saveDir = fullfile(dir_main,'Data/Aircraft Data Files');
+copyfile(fullfile(dir_vsp,[vspName '.polar.txt']), saveDir);
 
 
 
@@ -96,6 +98,7 @@ fclose('all');  % Close any open files
 delete(fullfile(dir_vsp,'*.vspscript'));
 
 cd(dir_main);
+fprintf('OpenVSP computations complete.\n\n\n');
 
 
 
