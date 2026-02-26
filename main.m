@@ -28,12 +28,14 @@
 %      - Update constraint diagram and make initial guesses better (use
 %      AAIA data).
 %      - plotGeom function that gives a rough 3D view of aircraft and all
-%      relevent control surfaces. Can update aircraft model to V2 once
-%      XFLR5 data is completed.
-%      - CAD for more accurate weights analysis. 
+%      relevent control surfaces.
+%      - (long term) CAD for more accurate weights analysis. 
 %      - Continue developing openVSP modeling. Need: 
 %             - Body, vert tail, horz tail, location based geom for all
 %      - Develop takeoff, climb, cruise, and descent simulation functions.
+%      - Reformat aircraft input files. I want EVERYTHING to fall out of an
+%        initial desired wingspan and payload (with inputs on desired
+%        flight conditions). 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -84,6 +86,12 @@ mission_input = "fiveMinuteFlight.m";
 
 
 
+%% Load Atmosphere
+
+atmosphere = buildAtmosphere;   % Standard Atmosphere Structure
+
+
+
 %% Load Aircraft Inputs
 
 inputs = loadInputs(aircraft_input, battery_input, ESC_input, motor_input,...
@@ -92,13 +100,7 @@ inputs = loadInputs(aircraft_input, battery_input, ESC_input, motor_input,...
 mission = loadMission(inputs);   % Loads Mission Details
 aircraft = loadAircraft(inputs);   % Loads Aircraft Input File 
 aircraft = loadEngine(inputs, aircraft);   % Loads Propulsion System
-aircraft = loadControls(inputs, aircraft);   % Loads Control Surface Information
-aircraft = loadAero(inputs, aircraft);   % Loads Aerodynamic Data
 
-
-%% Load Atmosphere
-
-atmosphere = buildAtmosphere;   % Standard Atmosphere Structure
 
 
 %% General Sizing 
@@ -140,10 +142,10 @@ aircraft = buildWeight(aircraft);
 %% Run Open VSP
 
 if openVSP_flag
-
+    
     aircraft = runVSP(aircraft);
 
-else 
+else
 
     aircraft = readVSPdata(aircraft);
 
@@ -162,7 +164,6 @@ end
 
 
 %% Output 
-
 
 fprintf('\n\nTotal Simulation Time: %.3f\n',toc(timer));
 clear timer;
