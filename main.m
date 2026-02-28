@@ -48,7 +48,7 @@ addpath(genpath(pwd));
 
 %% Flags
 
-flight_flag = 0;   % set to true to run a mission
+flight_flag = 1;   % set to true to run a mission
 openVSP_flag = 0;   % set to true to run OpenVSP simulation
 
 

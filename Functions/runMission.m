@@ -1,4 +1,4 @@
-function [aircraft,mission] = runMission(aircraft,mission)
+function [aircraft,mission] = runMission(aircraft,mission,atmosphere)
 % [aircraft,mission] = runMission(aircraft,mission)
 %
 %   - This function will input the finalized aircraft structure and mission
@@ -10,7 +10,7 @@ function [aircraft,mission] = runMission(aircraft,mission)
 
 %% Takeoff
 
-mission = calcTakeoff(aircraft,mission);
+mission = calcTakeoff(aircraft,mission,atmosphere);
 
 
 %% Climb 
