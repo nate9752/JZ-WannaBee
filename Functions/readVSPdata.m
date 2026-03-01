@@ -20,5 +20,9 @@ aircraft.aero.VSP.Cl = Cl;
 aircraft.aero.VSP.alpha = alpha;
 aircraft.aero.VSP.Cdi = Cdi;
 
+
+% Plot Aero Data
+plotAeroData(aircraft);
+
 end
 

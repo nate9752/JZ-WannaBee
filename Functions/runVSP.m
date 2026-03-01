@@ -86,6 +86,10 @@ aircraft.aero.VSP.alpha = alpha;
 aircraft.aero.VSP.Cdi = Cdi;
 
 
+% Plot aero Data
+plotAeroData(aircraft);
+
+
 
 %% Delete Everything Else
 
