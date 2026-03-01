@@ -5,9 +5,10 @@
 %% Takeoff Details
 
 mission.takeoff.type = 'hand_launch';
-mission.takeoff.h0 = 6;   % takeoff handlaunched height
-mission.takeoff.vx0 = 6;   % hand launch ft/s
-mission.takeoff.vy0 = 2;   % hand launch vertical speed ft/s
+mission.takeoff.h0 = 6.5;   % takeoff handlaunched height
+mission.takeoff.vx0 = 25;   % hand launch ft/s
+mission.takeoff.vy0 = 5;   % hand launch vertical speed ft/s
+mission.takeoff.alpha = 10;   % average AoA for takeoff (deg)
 
 
 %% Climb Details

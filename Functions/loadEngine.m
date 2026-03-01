@@ -22,7 +22,7 @@ total = 0;
 % Battery 
 if strcmp(batteryName,'LiPo 2200mAh 45-60C')
     batteryWeight = 0.3831;   % pounds 
-    capacity = 2200;   % mAh
+    capacity = 2200 / 1000;   % Ah
     maxCRating = 60;   % C
 
     % https://www.amazon.com/HOOVO-Connector-Helicopter-Airplane-Quadcopter/dp/B07MQT6YJN/ref=sr_1_1_sspa?crid=2OTGD9A4NA69F&dib=eyJ2IjoiMSJ9.cEki7d9Joys7ERq-hvXJ0vBIJm620VNESgYG4V0uknUDRwr5gmUHT7Pfk8roTIKWDioHq2xPWrd44HJ6nkvDsO-nxhHZwkm1dwwY_87EVmsvZhvGXuWT2AavWGUqW9HifxW4-Vept0mRzf_SI5Xby2INMEmjubYb2lIs5Ha_F4taa_ZO2Z6P_FdKeVCI-DtHvFdycKfaoXeIz_3PwPbpWfrTTMQXpSxp55ZiJbiY3jPZr-yEGBKVWP3ndECFW7-RZYmmo4BXmSKx7Tt1eEaq-nCtEw2qjLLuMH8ZEv7mqVk.chV8TpfZ2LByczEgq10yniFwGEyJBzkW2d7dAAA3EqM&dib_tag=se&keywords=3s+2200mah+lipo+45C&qid=1751473255&sprefix=3s+2200mah+lipo+45c%2Caps%2C97&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1
