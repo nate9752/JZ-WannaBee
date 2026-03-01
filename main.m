@@ -30,12 +30,13 @@
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces.
 %      - (long term) CAD for more accurate weights analysis. 
-%      - Continue developing openVSP modeling. Need: 
-%             - Body, vert tail, horz tail, location based geom for all
-%      - Develop takeoff, climb, cruise, and descent simulation functions.
+%      - Continue developing openVSP modeling. Body, location based geom 
+%      - Develop climb, cruise, and descent simulation functions.
 %      - Reformat aircraft input files. I want EVERYTHING to fall out of an
 %        initial desired wingspan and payload (with inputs on desired
 %        flight conditions). 
+%      - Output analytical performance data based on Anderson eqns.
+%      
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

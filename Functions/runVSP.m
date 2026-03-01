@@ -24,16 +24,10 @@ fprintf('\n\n\nBeginning AeroVSP Simulations:\n');
 % mach = 0;
 
 
-test.span = 3;
-test.rootChord = 0.5;
-test.tipChord = 0.5;
-test.sweepDeg = 5;
-
-
 
 %% writes geometries and vsp commands
 
-writeVSPscript(vspName,test);   
+writeVSPscript(vspName,aircraft);   
 command = sprintf('vsp -script "%s.vspscript"',vspName);
 system(command);
 pause(2);
@@ -70,14 +64,14 @@ writelines(lines,filename);
 data = readtable(strcat(vspName,".polar.txt"),'VariableNamingRule','preserve');
 saveDir = fullfile(dir_main,'Data/Aircraft Data Files');
 copyfile(fullfile(dir_vsp,[vspName '.polar.txt']), saveDir);
-
+copyfile(fullfile(dir_vsp,[vspName '.vsp3']), saveDir);
 
 
 %% Data Extraction 
 
-Cl = data{:,'CLtot'};
+Cl = data{:,'CLtot'} * 100 / aircraft.geom.wing.Sref;
 alpha = data{:,'AoA'};
-Cdi = data{:,'CDi'};
+Cdi = data{:,'CDi'} * 100 / aircraft.geom.wing.Sref;
 
 
 % Package VSP Data
