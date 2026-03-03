@@ -10,9 +10,9 @@ function aircraft = readVSPdata(aircraft)
 data = readtable('RCTB_V1.polar.txt','VariableNamingRule','preserve');
 
 
-Cl = data{:,'CLtot'};
+Cl = data{:,'CLtot'} * 100 / aircraft.geom.wing.Sref;
 alpha = data{:,'AoA'};
-Cdi = data{:,'CDi'};
+Cdi = data{:,'CDi'} * 100 / aircraft.geom.wing.Sref;
 
 
 % Package VSP Data
