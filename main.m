@@ -30,13 +30,21 @@
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces.
 %      - (long term) CAD for more accurate weights analysis. 
-%      - Continue developing openVSP modeling. Body, location based geom 
+%      - Continue developing openVSP modeling. (fuselage components) 
 %      - Develop climb, cruise, and descent simulation functions.
 %      - Reformat aircraft input files. I want EVERYTHING to fall out of an
 %        initial desired wingspan and payload (with inputs on desired
 %        flight conditions). 
 %      - Output analytical performance data based on Anderson eqns.
 %      
+%
+%  Function by function updates:
+%     - aircraft input file -/
+%     - prop input files -/
+%     - mission input file (more cruise, descent, landing specifics)
+%     - buildAtmosphere -/
+%     - calcBatteryWeightFraction -/
+%     - plot weight intersect --> need to check
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -113,7 +121,7 @@ aircraft = loadEngine(inputs, aircraft);   % Loads Propulsion System
 
 aircraft = calcBatteryWeightFraction(aircraft,mission);
 aircraft = plotWeightIntersect(aircraft);
-aircraft = plotConstraintAnalysis(aircraft,atmosphere);
+aircraft = plotConstraintAnalysis(aircraft,mission,atmosphere);
 
 
 % Next, the propulsion system will be sized using some preliminary

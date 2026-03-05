@@ -1,4 +1,4 @@
-function aircraft = plotConstraintAnalysis(aircraft,atmosphere)
+function aircraft = plotConstraintAnalysis(aircraft,mission,atmosphere)
 %makeConstraintAnalysis(aircraft)
 %   This function will make a constraint diagram with stall, maneuvering,
 %   power, and climbing constraints impossed. 
@@ -11,40 +11,40 @@ function aircraft = plotConstraintAnalysis(aircraft,atmosphere)
 
 WS = linspace(0,2.5,100)';
 
-% Unpackaging
+%% Unpackaging
+
 V_stall = aircraft.aero.V_stall;   % stall speed ft/s
 Clmax = aircraft.aero.Clmax;   % maximum coefficient of lift
 Cdo = aircraft.aero.Cdo;   % [0.02 0.025 0.027 0.03]
-LDmax = aircraft.aero.LD;   % [10 12 14 15]
+LDmax = aircraft.aero.LDmax;   % [10 12 14 15]
 
 eta_p = aircraft.engine.eta_p;
 V_cruise = aircraft.aero.V_cruise;
 V_climb = aircraft.aero.V_climb;
-gamma = aircraft.aero.gamma;
+gamma = mission.climb.gamma;
 e = aircraft.aero.e;
+AR = aircraft.aero.AR;
+Cdmin = aircraft.aero.Cdmin;
 
-
-AR = 5;   % preliminary estimate
 k = 1/(pi*AR*e);
-Cdmin = 0.025;
 
 
-% Stall Constraint - verified
+%% Stall Constraint - verified
 constraint_stall = 1/2 * atmosphere.rho(1) * V_stall^2 * Clmax;
 
 
-% Power Constraint 
+%% Power Constraint 
 % constraint_power = WS * 0.75 * 550 * eta_p ./ ...
 %          (1/2 * atmosphere.rho(1) * 1.1*(Cdo) * V_cruise^3);
 
 
-% Climbing Constraint
+%% Climbing Constraint
 % constraint_climb = 550 * eta_p ./...
 %                (V_climb * (1./(0.866.*LDmax) + sind(gamma)));
 constraint_climb = sind(gamma) + sqrt(4*k*Cdmin);   % TW version of constraint
 
 
-% Maneuvering Constraint
+%% Maneuvering Constraint
 n = 3;   % 3 g turns
 q = 1/2 * atmosphere.rho(end) * (V_cruise * 0.8)^2;   % 80% velocity on turn 
 % constraint_maneuvering = 550 * eta_p ./...
@@ -52,10 +52,11 @@ q = 1/2 * atmosphere.rho(end) * (V_cruise * 0.8)^2;   % 80% velocity on turn
 constraint_maneuvering = q * (Cdmin./WS + k*(n/q)^2 .* WS);   % TW version of constraint
 
 
-% Cruise Contraint
+%% Cruise Contraint
 constraint_cruise = q*Cdmin./WS + k/q.*WS;
 
 
+%% Plotting
 % Power Constraint 
 figure; 
 % plot(WS,constraint_power,'color','m','DisplayName','Power Constraint',...
@@ -98,7 +99,7 @@ for i = 1:length(constraint_climb)
 end
 
 
-% Design Point 
+%% Design Point 
 WS_design = constraint_stall(1) * 0.975;
 [~,idx] = min(abs(WS-constraint_stall(1)));
 if constraint_climb(1) > constraint_maneuvering(idx)

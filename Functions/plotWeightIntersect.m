@@ -17,47 +17,55 @@ WB_W = aircraft.weight.WB_W;
 payload = aircraft.weight.payload;
 
 
+
 %% Import Historical Data
 
-data = readmatrix('RCAircraftHistoricWeightData.xlsx');
+data = readtable('RCAircraftHistoricWeightData.xlsx','VariableNamingRule','preserve');
 
-index = data(:,7) > 20;   % finds outliers in gross weight, can change depending on current design
+index = data{:,'Gross Weight [lbf]'} > 20;   % finds outliers in gross weight, can change depending on current design
 data(index,:) = [];
-index = data(:,7) < 4;   % finds outliers in gross weight, can change depending on current design
+index = data{:,'Gross Weight [lbf]'} < 4;   % finds outliers in gross weight, can change depending on current design
 data(index,:) = [];
 % index = data(:,7) - data(:,9) > 12;
 % data(index,:) = [];
-index = data(:,7) - data(:,9) < 0.5;   % finds planes with no battery or playload
+index = data{:,'Gross Weight [lbf]'} - data{:,'Empty Weight [lbf]'} < 0.5;   % finds planes with no battery or playload
 data(index,:) = [];
 
-w = data(:,7);   % gross aircraft weight 
-we = data(:,9);   % empty weight 
+w = data{:,'Gross Weight [lbf]'};   % gross aircraft weight 
+we = data{:,'Empty Weight [lbf]'};   % empty weight 
+
 
 
 %% Sizing Plot - (W-We) and (Wb+Wpl) vs. W 
 
+% Plot Historic Weight Data
 figure;
 plot(w,w-we,'*b','DisplayName','Historic W-We');
 grid on; hold on; 
-xlabel('Gross Weight [lbf]'); ylabel('W-We and Wb+Wpl [lbf]');
-label = strcat('Historic Data--',string(aircraft.name),'--Weight Sizing');
-title(label);
-subtitle(strcat('payload =',num2str(payload),'lbf'));
 
-p1 = polyfit(w,w-we,1);   % curve fit for W-We vs. W
+% Plot Curve Fit For Historic Data
+p1 = polyfit(w,w-we,1);
 fun1 = polyval(p1,w);
 plot(w,fun1,'r','DisplayName','AIAA Polyfit','LineWidth',2);
 
+% Plot Calculated w_battery + w_payload
 WB_plus_PL = WB_W * w + payload;
 plot(w,WB_plus_PL,'m','DisplayName','WB+Wpayload','LineWidth',2);
 
+
+xlabel('Gross Weight [lbf]'); ylabel('W-We and Wb+Wpl [lbf]');
+label = strcat('Historic Data--',string(aircraft.name),'--Weight Sizing');
+title(label,'Interpreter','none');
+subtitle(strcat('payload =',num2str(payload),'lbf'));
 legend('show','location','Northwest');
- 
+
+
 % Find Intersect 
 intersect = (payload - p1(2)) / (p1(1) - WB_W);
 fprintf('\n-------AIAA Estimations-------\n');
-fprintf('Gross Weight Intersection: %.3f lbf\n',intersect)
+fprintf('Gross Weight Intersection: %.3f lbf\n',intersect);
 fprintf('Add 10%% Error Bound: %.3f lbf\n\n',intersect * 1.1);
+
 
 
 %% Packaging
@@ -69,10 +77,10 @@ aircraft.weight.gross = intersect*1.1;
 % Engine - equation from Gudmundsson chapter 3
 r = .75;   % 75% maximum rated power
 P_BHP = 1/r * aircraft.aero.V_cruise/(550*aircraft.engine.eta_p) * ...
-              aircraft.weight.gross/aircraft.aero.LD;
+              aircraft.weight.gross/aircraft.aero.LDmax;
 
 P_KW = 1/r * aircraft.aero.V_cruise*(0.3048)/(1000*aircraft.engine.eta_p) * ...
-              aircraft.weight.gross*(4.44822)/aircraft.aero.LD;   % conversion to SI
+              aircraft.weight.gross*(4.44822)/aircraft.aero.LDmax;   % conversion to SI
 aircraft.engine.P_BHP = P_BHP;
 aircraft.engine.P_KW = P_KW;
 
