@@ -69,7 +69,7 @@ end
 nomVoltPerCell = 3.7;   % nominal Voltage per cell for lipo batteries
 cells = str2double(strrep(cellcount,'S',''));
 nomVoltage = cells * nomVoltPerCell;
-current  = (wattage / nomVoltage) * 1.5 ;   % 1.2 for factor of safety
+current  = (wattage / nomVoltage) * 1.5 ;   % 1.5 for factor of safety
 current = ceil(current/5) * 5;   % round current to next highest multiple of 5
 
 capacity = linspace(500,6000,10^3);

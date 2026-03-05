@@ -5,7 +5,7 @@ function atmosphere = buildAtmosphere
 
 atmosphere = struct();
 
-h = linspace(0,200,1000);   % atmosphere
+h = linspace(0,500,1000);   % atmosphere
 
 gamma = 1.4;   % ratio of specific heats air
 Tsl = 518.67;   % temperature sea level R

@@ -14,6 +14,7 @@ mission.takeoff.alpha = 10;   % average AoA for takeoff (deg)
 %% Climb Details
 
 mission.climb.dth = 1;   % throttle for climb;
+mission.climb.gamma = 15;   % climb angle [deg]
 
 
 %% Cruise Details
@@ -21,6 +22,7 @@ mission.climb.dth = 1;   % throttle for climb;
 mission.cruise.flag = 1;
 mission.cruiseDuration = 5 * 60;   % five minutes [sec]
 mission.turning.flag = 0;   % for preliminary design, won't consider turning
+mission.cruise.h = 100;   % cruise altitude [ft]
 
 
 %% Descent Details 
