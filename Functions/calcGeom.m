@@ -11,22 +11,36 @@ cw = aircraft.geom.wing.meanchord;
 Sref = aircraft.geom.wing.Sref;
 b = aircraft.geom.wing.b;
 AR = aircraft.geom.wing.AR;
-lam_ht = aircraft.geom.horztail.lam_ht;
-lam_vt = aircraft.geom.verttail.lam_vt;
-lam = aircraft.geom.wing.lam;
+lam_ht = aircraft.geom.horztail.lam;
+lam_vt = aircraft.geom.verttail.lam;
+lam_w = aircraft.geom.wing.lam;
 
-% Wing 
-cr = 2*Sref / (b*(1+lam));
-ct = lam*cr;
 
-% Fuselage Sizing
+
+%% Wing 
+
+% Loop through all wing sections, determine chords, spans
+for i = 1:aircraft.geom.wing.sections
+    
+    
+end
+cr = 2*Sref / (b*(1+lam_w));
+ct = lam_w*cr;
+
+
+
+%% Fuselage Sizing
+
 l_fuselage_homebuilt = 3.5*gross^0.23;   % Homebuilt - composite, length fuselage
 % l_fuselage_general = 4.37*gross^0.23;   % general aviation single engine length fuselage
 % l_fuselage = 1/2 * (l_fuselage_general + l_fuselage_homebuilt) * 1.5;
 % l_fuselage = 0.75 * l_fuselage_homebuilt;   % scaling factor bc storage requirement (senior design)
 l_fuselage = l_fuselage_homebuilt;   % converts to inches
 
-% Horizontal Tail Sizing
+
+
+%% Horizontal Tail Sizing
+
 ARht = 0.5 * AR;
 
 Cht = 0.6;   % average for horizontal tail coefficient
@@ -40,7 +54,9 @@ ch_r = 2*Sht / (bh*(1+lam_ht));   % root chord horizontal tail
 ch_t = lam_ht*ch_r;   % tip chord horizontal tail 
 
 
-% Vertical Tail Sizing
+
+%% Vertical Tail Sizing
+
 ARvt = 1.5;   % aspect ratio vertical tail [1.3 2]
 Cvt = 0.04;   % average vertical tail coefficient
 Lv = 0.6*l_fuselage;   % length from 1/4c wing to 1/4t
@@ -52,7 +68,9 @@ cv_r = 2*Svt / (bv*(1+lam_vt));   % root chord vertical tail
 cv_t = lam_vt*cv_r;   % tip chord vertical tail 
 
 
-% Control Surface Sizing 
+
+%% Control Surface Sizing 
+
 aileron_span = 0.35 * b;   % one half on each wing
 aileron_chord = 0.25 * cw;
 elevator_span = .925 * bh;
@@ -67,7 +85,7 @@ nose2LE = l_fuselage - (Lh + 3*ch/4 + cw/4);
 %% Packaging
 
 % wing
-aircraft.geom.wing.taper = lam;
+aircraft.geom.wing.taper = lam_w;
 aircraft.geom.wing.cr = cr;
 aircraft.geom.wing.ct = ct;
 aircraft.geom.wing.nose2LE = nose2LE;

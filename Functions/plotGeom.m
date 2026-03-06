@@ -21,7 +21,7 @@ c_ht = aircraft.geom.horztail.chord;
 b_ht = aircraft.geom.horztail.span;
 c_vt = aircraft.geom.verttail.chord;
 b_vt = aircraft.geom.verttail.span;
-tc_vt = aircraft.geom.verttail.tc_vt;
+tc_vt = aircraft.geom.verttail.tc;
 
 % fuselage
 fuselagex = [0 lf lf 0 0];

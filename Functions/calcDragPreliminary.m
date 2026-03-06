@@ -24,8 +24,8 @@ if any(strcmp(components,'wing'))
     cw = aircraft.geom.wing.meanchord;   % chord ft
     df = aircraft.geom.wing.df;   % wing covered by fuselage
     Sref = aircraft.geom.wing.Sref;   % reference area ft^2
-    Lam_w = aircraft.geom.wing.Lam_w;   % Lambda (capital) angle deg
-    tc_w = aircraft.geom.wing.tc_w;   % ratio of thickness to chord 
+    Lam_w = aircraft.geom.wing.Lam;   % Lambda (capital) angle deg
+    tc_w = aircraft.geom.wing.tc;   % ratio of thickness to chord 
     Qfw = aircraft.geom.wing.Qfw;   
     
     Rew = Re_l*cw;
@@ -58,9 +58,9 @@ if any(strcmp(components,'horztail'))
     % horizontal tail 
     ch = aircraft.geom.horztail.chord;   % chord ft
     Sh = aircraft.geom.horztail.Sh;   % horizontal tail area ft^2
-    Lam_ht = aircraft.geom.horztail.Lam_ht;   % Lambda of horizontal tail (rad)
-    tc_ht = aircraft.geom.horztail.tc_ht;   % thickness to chord ratio horizontal tail
-    Qf_ht = aircraft.geom.horztail.Qf_ht;
+    Lam_ht = aircraft.geom.horztail.Lam;   % Lambda of horizontal tail (rad)
+    tc_ht = aircraft.geom.horztail.tc;   % thickness to chord ratio horizontal tail
+    Qf_ht = aircraft.geom.horztail.Qf;
     
     Re_ht = Re_l*cw;
     Cf_ht = 0.455 / (log10(Re_ht))^2.58;
@@ -76,9 +76,9 @@ if any(strcmp(components,'verttail'))
     % vertical tail
     cv = aircraft.geom.verttail.chord;   % chord ft
     Sv = aircraft.geom.verttail.Sv;   % vertical tail area ft^2
-    Lam_vt = aircraft.geom.verttail.Lam_vt;   % Lambda of vertical tail (rad)
-    tc_vt = aircraft.geom.verttail.tc_vt;   % thickness to chord ratio vertical tail
-    Qf_vt = aircraft.geom.verttail.Qf_vt;
+    Lam_vt = aircraft.geom.verttail.Lam;   % Lambda of vertical tail (rad)
+    tc_vt = aircraft.geom.verttail.tc;   % thickness to chord ratio vertical tail
+    Qf_vt = aircraft.geom.verttail.Qf;
     
     Re_vt = Re_l*cv;
     Cf_vt = 0.455 / (log10(Re_vt))^2.58;
