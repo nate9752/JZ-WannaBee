@@ -22,12 +22,10 @@ payload = aircraft.weight.payload;
 
 data = readtable('RCAircraftHistoricWeightData.xlsx','VariableNamingRule','preserve');
 
-index = data{:,'Gross Weight [lbf]'} > 20;   % finds outliers in gross weight, can change depending on current design
+index = data{:,'Gross Weight [lbf]'} > 20;   % finds outliers in gross weight
 data(index,:) = [];
-index = data{:,'Gross Weight [lbf]'} < 4;   % finds outliers in gross weight, can change depending on current design
+index = data{:,'Gross Weight [lbf]'} < 4;   % finds outliers in gross weight
 data(index,:) = [];
-% index = data(:,7) - data(:,9) > 12;
-% data(index,:) = [];
 index = data{:,'Gross Weight [lbf]'} - data{:,'Empty Weight [lbf]'} < 0.5;   % finds planes with no battery or playload
 data(index,:) = [];
 
@@ -57,7 +55,6 @@ xlabel('Gross Weight [lbf]'); ylabel('W-We and Wb+Wpl [lbf]');
 label = strcat('Historic Data--',string(aircraft.name),'--Weight Sizing');
 title(label,'Interpreter','none');
 subtitle(strcat('payload =',num2str(payload),'lbf'));
-legend('show','location','Northwest');
 
 
 % Find Intersect 
@@ -65,6 +62,14 @@ intersect = (payload - p1(2)) / (p1(1) - WB_W);
 fprintf('\n-------AIAA Estimations-------\n');
 fprintf('Gross Weight Intersection: %.3f lbf\n',intersect);
 fprintf('Add 10%% Error Bound: %.3f lbf\n\n',intersect * 1.1);
+
+
+
+yint = WB_W*intersect + payload;
+plot(intersect,yint,'ro','LineWidth',1.2,'DisplayName','Design Intersection');
+
+
+legend('show','location','Northwest');
 
 
 

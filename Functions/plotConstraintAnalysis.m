@@ -13,10 +13,12 @@ WS = linspace(0,2.5,100)';
 
 %% Unpackaging
 
+W = aircraft.weight.gross;
 V_stall = aircraft.aero.V_stall;   % stall speed ft/s
 Clmax = aircraft.aero.Clmax;   % maximum coefficient of lift
-Cdo = aircraft.aero.Cdo;   % [0.02 0.025 0.027 0.03]
-LDmax = aircraft.aero.LDmax;   % [10 12 14 15]
+Cdo = aircraft.aero.Cdo;
+LDmax = aircraft.aero.LDmax;
+LDmaxend = aircraft.aero.LDmaxend;
 
 eta_p = aircraft.engine.eta_p;
 V_cruise = aircraft.aero.V_cruise;
@@ -27,6 +29,11 @@ AR = aircraft.aero.AR;
 Cdmin = aircraft.aero.Cdmin;
 
 k = 1/(pi*AR*e);
+
+
+%% Desired L/D Cruise 
+
+constraint_LD = 1/(LDmaxend);
 
 
 %% Stall Constraint - verified
@@ -57,6 +64,7 @@ constraint_cruise = q*Cdmin./WS + k/q.*WS;
 
 
 %% Plotting
+
 % Power Constraint 
 figure; 
 % plot(WS,constraint_power,'color','m','DisplayName','Power Constraint',...
@@ -68,6 +76,11 @@ xlabel('W/S Wing Loading [lbf/ft^2]');
 % ylabel('W/P Power Loading [lbf/hp]');
 ylabel('T/W Thrust to Weight');
 title('Contraint Analysis');   %: ',string(aircraft.name)); 
+
+
+% LD Constraint
+yline(constraint_LD,'displayName','Desired Cruise LD',...
+             'color','m','LineWidth',2,'label',string(LDmaxend));
 
 
 % Maneuvering Constraint
@@ -85,7 +98,7 @@ for i = 1:length(constraint_stall)
                    'color',colors(i,:),'LineWidth',2,'Label',cl_labels);
 end
 
-% Cruise Constraint - doesn't work too well
+% Cruise Constraint
 plot(WS,constraint_cruise,'r','displayname','Cruise Constraint','linewidth',2);
 label = strjoin({'V_{cruise} = ',num2str(V_cruise)},' ');
 text(WS(end)*0.2,constraint_cruise(length(WS)*0.25),label,'VerticalAlignment','top');
@@ -99,7 +112,9 @@ for i = 1:length(constraint_climb)
 end
 
 
+
 %% Design Point 
+
 WS_design = constraint_stall(1) * 0.975;
 [~,idx] = min(abs(WS-constraint_stall(1)));
 if constraint_climb(1) > constraint_maneuvering(idx)
@@ -127,8 +142,8 @@ aircraft.geom.wing.Sref = aircraft.weight.gross / (WS_design);
 
 % Geom (with AR based on desired wingspan)
 Sref = aircraft.geom.wing.Sref;
-if aircraft.geom.wing.b^2 / aircraft.geom.wing.Sref < 5
-    b = sqrt(5*Sref);
+if aircraft.geom.wing.b^2 / aircraft.geom.wing.Sref < AR
+    b = sqrt(AR*Sref);
     c = Sref / b;
 
     aircraft.geom.wing.b = b;
@@ -144,3 +159,4 @@ end
 
 
 end
+

@@ -1,12 +1,12 @@
-% JZ WannaBee
+% Aircraft Sizing Code
 %
-%   Authors: Nate Carey
+%   Author: Nate Carey
 %
 %   This code will serve as the center of our aircraft sizing caluclations,
 %   as well as our general performance analysis and trade studies. This 
 %   code draws inspiration from JZ-X, JetZero's in house aircraft sizing
-%   tool. I also have taken much of my own code from a previous project,
-%   design build fly, in which me and a group of engineers build an RC
+%   tool. I have taken much of my own code from a previous project,
+%   design build fly, in which me and a group of engineers built an RC
 %   aircraft in my undergrad. 
 %
 %   To use this code:
@@ -25,8 +25,6 @@
 %
 %
 %   TO DO: 
-%      - Update constraint diagram and make initial guesses better (use
-%      AAIA data).
 %      - plotGeom function that gives a rough 3D view of aircraft and all
 %      relevent control surfaces.
 %      - (long term) CAD for more accurate weights analysis. 
@@ -37,14 +35,6 @@
 %        flight conditions). 
 %      - Output analytical performance data based on Anderson eqns.
 %      
-%
-%  Function by function updates:
-%     - aircraft input file -/
-%     - prop input files -/
-%     - mission input file (more cruise, descent, landing specifics)
-%     - buildAtmosphere -/
-%     - calcBatteryWeightFraction -/
-%     - plot weight intersect --> need to check
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -57,7 +47,7 @@ addpath(genpath(pwd));
 
 %% Flags
 
-flight_flag = 1;   % set to true to run a mission
+flight_flag = 0;   % set to true to run a mission
 openVSP_flag = 0;   % set to true to run OpenVSP simulation
 
 

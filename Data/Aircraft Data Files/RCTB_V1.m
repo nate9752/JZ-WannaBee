@@ -36,7 +36,7 @@ V_stall = 30;   % stall speed [ft/s] <- USC 2024 DBF report
 %% Aircraft Performance
 
 Clmax = 1.4;   % maximum lift coefficient
-AR = 6;
+AR = 6;   % Desired Aspect Ratio
 
 % New Raymer Estimates
 Swet_Sref = 3.8;   % Flying Wing 2.1
@@ -87,16 +87,19 @@ Cd = Cdo + k1*Cl.^2 + k2*Cl;
 
 
 %% Preliminary Geom Estimates
-% can estimate from prior projects or other areas
 
 components = {'wing', 'fuselage','horztail','verttail'};
 
 % wings 
+wingsections = 2;
 b = 3;   % wingspan [in]
-tc_w = 0.12;   % thickness to chord NACA 0012
-lambda_w = 1;   % wing taper ratio
+camber_w = 0.24;   % camber location for NACA 2412
+tc_w = 0.12;   % thickness to chord NACA 2412
 df = 0;   % wing covered by fuselage; 0 b/c high wing config
 Qfw = 1;   % high wing config interference value
+
+% --- Section 1 ---%
+lambda_w = 1;   % wing taper ratio
 Lam_w = 0 * pi/180;   % sweep angle (capital lambda) wing
 
 
@@ -104,13 +107,17 @@ Lam_w = 0 * pi/180;   % sweep angle (capital lambda) wing
 diam_fuselage = 0.25;   % diameter fuselage [ft]
 Qff = 1;   % interference factor fuselage
 
+
 % horizontal tail - CHANGE AFTER TAILS SIZING 
+htsections = 1;
 tc_ht = 0.12;   % thickness to chord ratio horizontal tail
 lambda_ht = 1;   % horizontal tail taper ratio
 Qf_ht = 1;   % interference factor horizontal tail
 Lam_ht = 0 * pi/180;    % sweep angle (capital lambda) horizontal tail
 
+
 % vertical tail - CHANGE AFTER TAIL SIZING
+vtsections = 1;
 tc_vt = 0.12;   % thickness to chord ratio vertical tail
 lambda_vt = 1;   % vertical tail taper ratio
 Qf_vt = 1;   % interference factor vertical tail
@@ -196,6 +203,7 @@ aircraft.aero.AR = AR;
 % geom
 aircraft.geom.components = components;
 
+aircraft.geom.wing.sections = wingsections;
 aircraft.geom.wing.b = b;
 aircraft.geom.wing.tc_w = tc_w;
 aircraft.geom.wing.lam = lambda_w;
@@ -206,11 +214,13 @@ aircraft.geom.wing.Lam_w = Lam_w;
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
 aircraft.geom.fuselage.Qff = Qff;
 
+aircraft.geom.horztail.sections = htsections;
 aircraft.geom.horztail.tc_ht = tc_ht;
 aircraft.geom.horztail.lam_ht = lambda_ht;
 aircraft.geom.horztail.Qf_ht = Qf_ht;
 aircraft.geom.horztail.Lam_ht = Lam_ht;
 
+aircraft.geom.verttail.sections = vtsections;
 aircraft.geom.verttail.tc_vt = tc_vt;
 aircraft.geom.verttail.lam_vt = lambda_vt;
 aircraft.geom.verttail.Qf_vt = Qf_vt;
