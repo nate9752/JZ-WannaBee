@@ -11,21 +11,29 @@ cw = aircraft.geom.wing.meanchord;
 Sref = aircraft.geom.wing.Sref;
 b = aircraft.geom.wing.b;
 AR = aircraft.geom.wing.AR;
-lam_ht = aircraft.geom.horztail.lam;
-lam_vt = aircraft.geom.verttail.lam;
-lam_w = aircraft.geom.wing.lam;
-
 
 
 %% Wing 
 
-% Loop through all wing sections, determine chords, spans
-for i = 1:aircraft.geom.wing.sections
-    
-    
+if aircraft.geom.wing.sections == 2
+    lam_w1 = aircraft.geom.wing.sec1.lam;   % taper of section 1
+    y_w1 = aircraft.geom.wing.sec1.spanpct * b/2;   % span of section 1
+
+    lam_w2 = aircraft.geom.wing.sec2.lam;   % taper of section 2
+    y_w2 = aircraft.geom.wing.sec2.spanpct * b/2;   % span of section 2
+
+    cr = (Sref/2) / (.5*(1+lam_w1)*y_w1 + 0.5*(lam_w1+lam_w1*lam_w2)*y_w2);   % root chord station 0
+
+    c1 = lam_w1*cr;   % chord station 1
+    c2 = lam_w2*c1;   % chord station 2
+
+    aircraft.geom.wing.stat1.c = cr;
+    aircraft.geom.wing.stat2.c = c1;
+    aircraft.geom.wing.stat3.c = c2;
+    aircraft.geom.wing.stat1.y = 0;
+    aircraft.geom.wing.stat2.y = y_w1;
+    aircraft.geom.wing.stat3.y = y_w2;
 end
-cr = 2*Sref / (b*(1+lam_w));
-ct = lam_w*cr;
 
 
 
@@ -44,14 +52,22 @@ l_fuselage = l_fuselage_homebuilt;   % converts to inches
 ARht = 0.5 * AR;
 
 Cht = 0.6;   % average for horizontal tail coefficient
-% Nose to LE wing is 40% of fuselage
 Lh = 0.6*l_fuselage;   % length from 1/4c wing to 1/4c tail
 Sht = Cht*cw*Sref/Lh;   % area of horizontal tail
-
 bh = sqrt(Sht * ARht);   % span horizontal tail
 ch = Sht / bh;   % mean chord of horizontal tail
-ch_r = 2*Sht / (bh*(1+lam_ht));   % root chord horizontal tail
-ch_t = lam_ht*ch_r;   % tip chord horizontal tail 
+
+if aircraft.geom.horztail.sections == 1
+    lam_ht1 = aircraft.geom.horztail.sec1.lam;
+    y_ht1 = aircraft.geom.horztail.sec1.spanpct * bh/2;
+
+    ch_r = 2*Sht / (bh*(1+lam_ht1));   % root chord horizontal tail
+    ch_t = lam_ht1*ch_r;   % tip chord horizontal tail 
+
+    aircraft.geom.horztail.stat1.c = ch_r;
+    aircraft.geom.horztail.stat2.c = ch_t;
+    aircraft.geom.horztail.stat2.y = y_ht1;
+end
 
 
 
@@ -61,17 +77,26 @@ ARvt = 1.5;   % aspect ratio vertical tail [1.3 2]
 Cvt = 0.04;   % average vertical tail coefficient
 Lv = 0.6*l_fuselage;   % length from 1/4c wing to 1/4t
 Svt = Cvt*b*Sref/Lv;   % area of vertical tail
-
 bv = sqrt(Svt * ARvt);   % span vertical tail
-cv = Svt / bv;   % chord vertical tail
-cv_r = 2*Svt / (bv*(1+lam_vt));   % root chord vertical tail
-cv_t = lam_vt*cv_r;   % tip chord vertical tail 
+cv = Svt / bv;   % mean chord vertical tail
+
+if aircraft.geom.verttail.sections == 1
+    lam_vt1 = aircraft.geom.verttail.sec1.lam;
+    y_vt1 = aircraft.geom.verttail.sec1.spanpct * bv/2;
+
+    cv_r = 2*Svt / (bv*(1+lam_vt1));   % root chord horizontal tail
+    cv_t = lam_vt1*cv_r;   % tip chord horizontal tail 
+
+    aircraft.geom.verttail.stat1.c = cv_r;
+    aircraft.geom.verttail.stat2.c = cv_t;
+    aircraft.geom.verttail.stat2.y = y_vt1;
+end
 
 
 
 %% Control Surface Sizing 
 
-aileron_span = 0.35 * b;   % one half on each wing
+aileron_span = 0.35 * b;
 aileron_chord = 0.25 * cw;
 elevator_span = .925 * bh;
 elevator_chord = 0.325 * ch;
@@ -85,14 +110,13 @@ nose2LE = l_fuselage - (Lh + 3*ch/4 + cw/4);
 %% Packaging
 
 % wing
-aircraft.geom.wing.taper = lam_w;
-aircraft.geom.wing.cr = cr;
-aircraft.geom.wing.ct = ct;
 aircraft.geom.wing.nose2LE = nose2LE;
 % aircraft.geom.wing.wingVolume = WingVolume;
 
+
 % fuselage
 aircraft.geom.fuselage.lf = l_fuselage;
+
 
 % horizontal tail
 aircraft.geom.horztail.Sh = Sht;
@@ -102,7 +126,7 @@ aircraft.geom.horztail.tipchord = ch_t;
 aircraft.geom.horztail.span = bh;
 aircraft.geom.horztail.AR = ARht;
 aircraft.geom.horztail.Lh = Lh;
-aircraft.geom.horztail.Vht = Cht;
+aircraft.geom.horztail.Cht = Cht;
 
 
 % vertical tail

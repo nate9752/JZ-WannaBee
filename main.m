@@ -30,10 +30,11 @@
 %      - (long term) CAD for more accurate weights analysis. 
 %      - Continue developing openVSP modeling. (fuselage components) 
 %      - Develop climb, cruise, and descent simulation functions.
-%      - Reformat aircraft input files. I want EVERYTHING to fall out of an
-%        initial desired wingspan and payload (with inputs on desired
-%        flight conditions). 
 %      - Output analytical performance data based on Anderson eqns.
+%      - Change / Check calcGeom   
+%         - Reformat wing location sizing
+%         - Reformat Tail sizing methods
+%         - Reformat control surface sizing methods
 %      
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +42,7 @@
 clear; clc; close all;
 timer = tic();
 
-cd(fileparts(mfilename("fullpath")))
+cd(fileparts(mfilename("fullpath")));
 addpath(genpath(pwd));
 
 
@@ -126,8 +127,7 @@ aircraft = loadPropMap(inputs, aircraft);
 % calculations are preformed. 
 
 aircraft = calcGeom(aircraft);
-aircraft = calcDragPreliminary(aircraft,atmosphere);
-
+% aircraft = calcDragPreliminary(aircraft,atmosphere);
 % plotVnDiagram(atmosphere,aircraft);
 
 

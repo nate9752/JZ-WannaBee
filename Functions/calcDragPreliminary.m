@@ -117,9 +117,6 @@ Cl = aircraft.weight.gross ./ (q*aircraft.geom.wing.Sref);
 
 
 % Oswald Efficiency Factor
-% e = 0.70;   % lower historical bound  
-% e = 0.85;   % upper historical bound 
-% e = 0.98 * (1-Df/b);   % Analytical Estimate
 e = aircraft.aero.e;
 
 Cdi = Cl.^2 ./ (pi*e*aircraft.geom.wing.AR);   % induced drag (drag due to lift)
