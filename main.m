@@ -26,10 +26,12 @@
 %
 %   TO DO: 
 %      - plotGeom function that gives a rough 3D view of aircraft and all
-%      relevent control surfaces.
+%        relevent control surfaces.
 %      - (long term) CAD for more accurate weights analysis. 
+%      - (long term / not really necessary) fix calcDragPreliminary to
+%        account for new section/station aircraft geom layout.
 %      - Continue developing openVSP modeling. (fuselage components) 
-%      - Develop climb, cruise, and descent simulation functions.
+%      - Develop cruise and descent simulation functions.
 %      - Output analytical performance data based on Anderson eqns.
 %      - Change / Check calcGeom   
 %         - Reformat wing location sizing
@@ -48,7 +50,7 @@ addpath(genpath(pwd));
 
 %% Flags
 
-flight_flag = 0;   % set to true to run a mission
+flight_flag = 1;   % set to true to run a mission
 openVSP_flag = 0;   % set to true to run OpenVSP simulation
 
 

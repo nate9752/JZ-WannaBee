@@ -41,6 +41,9 @@ dt = 0.01;
 exitflag = 1;
 i = 1;
 
+
+%% Integration Loop
+
 while exitflag
     
     if i == 1
@@ -99,7 +102,7 @@ while exitflag
     dth(i+1) = dth(i);
     W(i+1) = W(i);
 
-    if h(i) > 10 || i > 500
+    if (V(i) > mission.climb.climbFactor*aircraft.aero.V_stall && vy(i) > 0) || i > 500
         exitflag = 0;
     elseif h(i) < 0
         warning('Takeoff Failed, h < 0 ft');

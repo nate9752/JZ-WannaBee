@@ -15,6 +15,8 @@ mission = calcTakeoff(aircraft,mission,atmosphere);
 
 %% Climb 
 
+mission = calcClimb(aircraft,mission,atmosphere);
+
 
 %% Cruise 
 
