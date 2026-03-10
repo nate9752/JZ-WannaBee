@@ -71,9 +71,9 @@ Cdmin = 0.03;        % High AR skinny wing 0.01 - 0.015
                      % long big wing 0.04
 
 
-Clmin = 0;           % Symmmetric Airfoil 0
-                     % Cambered Airfoil 0.1 - 0.2
-                     % Cambered high lift 0.4 - 0.45
+Clmin = 0.1;           % Symmmetric Airfoil 0
+                       % Cambered Airfoil 0.1 - 0.2
+                       % Cambered high lift 0.4 - 0.45
 
 
 % Assemble Drag Polar
@@ -223,6 +223,8 @@ aircraft.aero.Cdo = Cdo;
 aircraft.aero.Cdmin = Cdmin;
 aircraft.aero.e = e;
 aircraft.aero.AR = AR;
+aircraft.aero.k1 = k1;
+aircraft.aero.k2 = k2;
 
 % geom
 aircraft.geom.components = components;
@@ -235,8 +237,6 @@ aircraft.geom.wing.camber = camber_w;
 aircraft.geom.wing.camberLoc = camberLoc_w;
 aircraft.geom.wing.df = df;
 aircraft.geom.wing.Qfw = Qfw;
-% aircraft.geom.wing.lam = lambda_w;
-% aircraft.geom.wing.Lam = Lam_w;
 aircraft.geom.wing.sec1.lam = lambda_w1;
 aircraft.geom.wing.sec1.Lam = Lam_w1;
 aircraft.geom.wing.sec1.spanpct = spanpct_w1;
@@ -253,9 +253,8 @@ aircraft.geom.fuselage.Qff = Qff;
 % geom.horztail
 aircraft.geom.horztail.sections = htsections;
 aircraft.geom.horztail.tc = tc_ht;
-% aircraft.geom.horztail.lam = lambda_ht;
 aircraft.geom.horztail.Qf = Qf_ht;
-% aircraft.geom.horztail.Lam = Lam_ht;
+
 aircraft.geom.horztail.sec1.lam = lambda_ht1;
 aircraft.geom.horztail.sec1.Lam = Lam_ht1;
 aircraft.geom.horztail.sec1.spanpct = spanpct_ht1;
@@ -264,9 +263,7 @@ aircraft.geom.horztail.sec1.theta = theta_ht1;
 % geom.verttail
 aircraft.geom.verttail.sections = vtsections;
 aircraft.geom.verttail.tc = tc_vt;
-% aircraft.geom.verttail.lam = lambda_vt;
 aircraft.geom.verttail.Qf = Qf_vt;
-% aircraft.geom.verttail.Lam = Lam_vt;
 aircraft.geom.verttail.sec1.lam = lambda_vt1;
 aircraft.geom.verttail.sec1.Lam = Lam_vt1;
 aircraft.geom.verttail.sec1.spanpct = spanpct_vt1;
