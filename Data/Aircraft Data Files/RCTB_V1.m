@@ -86,7 +86,7 @@ Cd = Cdo + k1*Cl.^2 + k2*Cl;
 
 
 
-%% Preliminary Geom Estimates
+%% Preliminary Aero Geom Estimates
 
 components = {'wing', 'fuselage','horztail','verttail'};
 
@@ -98,8 +98,6 @@ camberLoc_w = 0.4;   % located 40% chord
 tc_w = 0.12;   % thickness to chord NACA 2412
 df = 0;   % wing covered by fuselage; 0 b/c high wing config
 Qfw = 1;   % high wing config interference value
-% lambda_w = 1;   % wing taper ratio
-% Lam_w = 0 * pi/180;   % sweep angle (capital lambda) wing
 
 % --- Section 1 --- %
 lambda_w1 = 1;   % taper ratio section 1
@@ -114,17 +112,17 @@ Lam_w2 = Lam_w1;   % sweep angle, same as previous section
 theta_w2 = 0;   % twist (deg) section 2, not used for now
 
 
+
 %%%% Fuselage %%% 
 diam_fuselage = 0.25;   % diameter fuselage [ft]
 Qff = 1;   % interference factor fuselage
+
 
 
 %%%% Horizontal Tail %%%
 htsections = 1;
 tc_ht = 0.12;   % thickness to chord ratio horizontal tail
 Qf_ht = 1;   % interference factor horizontal tail
-% lambda_ht = 1;   % horizontal tail taper ratio
-% Lam_ht = 0 * pi/180;    % sweep angle (capital lambda) horizontal tail
 
 % --- Section 1 --- %
 Lam_ht1 = 0 * pi/180;    % sweep angle (capital lambda) horizontal tail
@@ -133,12 +131,11 @@ spanpct_ht1 = 1;
 theta_ht1 = 0;
 
 
+
 %%% Vertical Tail %%%
 vtsections = 1;
 tc_vt = 0.12;   % thickness to chord ratio vertical tail
 Qf_vt = 1;   % interference factor vertical tail
-% lambda_vt = 1;   % vertical tail taper ratio
-% Lam_vt = 0 * pi/180;   % sweep angle (capital lambda) vertical tail
 
 % --- Section 1 --- %
 Lam_vt1 = 30;    % sweep angle (capital lambda) horizontal tail
@@ -147,8 +144,28 @@ spanpct_vt1 = 1;
 theta_vt1 = 0;
 
 
+
 %%%% Landing Gear %%% 
 landingGearFlag = 0;
+
+
+
+%% Fuselage Type
+
+% Raymer Fuselage coefficients for length = a * W^C
+a_fus = 4.37;
+C_fus = 0.23;
+                    % Sailplane unpowered: a = 0.86, C =.48
+                    % Sailplane powered: a = 3.68, C = 0.48
+                    % Homebuilt composite: a = 3.5, C = .23
+                    % General aviation single engine: a = 4.37, C = .23
+                    % General aviation twin engine: a = .86, C = .42
+                    % Twin_turboprop: a = .37, C = .51
+                    % Flying boat: a = 1.05, C = .4
+                    % Jet trainer: a = .79, C = .41
+                    % Jet fighter: a = .93, C = .39
+                    % Military cargo: a = .23, C = .50
+                    % Jet_transport: a = .67, C = .43
 
 
 
@@ -249,6 +266,8 @@ aircraft.geom.wing.sec2.theta = theta_w2;
 % geom.fuselage
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
 aircraft.geom.fuselage.Qff = Qff;
+aircraft.geom.fuselage.a_fus = a_fus;
+aircraft.geom.fuselage.C_fus = C_fus;
 
 % geom.horztail
 aircraft.geom.horztail.sections = htsections;

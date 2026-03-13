@@ -39,15 +39,15 @@ end
 
 %% Fuselage Sizing
 
-l_fuselage_homebuilt = 3.5*gross^0.23;   % Homebuilt - composite, length fuselage
-% l_fuselage_general = 4.37*gross^0.23;   % general aviation single engine length fuselage
-% l_fuselage = 1/2 * (l_fuselage_general + l_fuselage_homebuilt) * 1.5;
-% l_fuselage = 0.75 * l_fuselage_homebuilt;   % scaling factor bc storage requirement (senior design)
+a_fus = aircraft.geom.fuselage.a_fus;
+C_fus = aircraft.geom.fuselage.C_fus;
+
+l_fuselage_homebuilt = a_fus*gross^C_fus;   % Raymer Fuselage Length
 l_fuselage = l_fuselage_homebuilt;   % converts to inches
 
 
 
-%% Horizontal Tail Sizing
+%% Horizontal Tail Sizing - Raymer Chapter 6
 
 ARht = 0.5 * AR;
 
@@ -71,7 +71,7 @@ end
 
 
 
-%% Vertical Tail Sizing
+%% Vertical Tail Sizing - Raymer Chapter 6
 
 ARvt = 1.5;   % aspect ratio vertical tail [1.3 2]
 Cvt = 0.04;   % average vertical tail coefficient
@@ -82,7 +82,7 @@ cv = Svt / bv;   % mean chord vertical tail
 
 if aircraft.geom.verttail.sections == 1
     lam_vt1 = aircraft.geom.verttail.sec1.lam;
-    y_vt1 = aircraft.geom.verttail.sec1.spanpct * bv/2;
+    y_vt1 = aircraft.geom.verttail.sec1.spanpct * bv;
 
     cv_r = 2*Svt / (bv*(1+lam_vt1));   % root chord horizontal tail
     cv_t = lam_vt1*cv_r;   % tip chord horizontal tail 
@@ -94,11 +94,11 @@ end
 
 
 
-%% Control Surface Sizing 
+%% Control Surface Sizing - Raymer Chapter 6
 
 aileron_span = 0.35 * b;
 aileron_chord = 0.25 * cw;
-elevator_span = .925 * bh;
+elevator_span = .9 * bh;
 elevator_chord = 0.325 * ch;
 rudder_span = 0.90 * bv;
 rudder_chord = 0.30 * cv;
