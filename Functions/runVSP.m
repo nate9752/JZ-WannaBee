@@ -34,17 +34,6 @@ pause(2);
 
 
 
-%% Write aero input file and execute simulation
-
-% % Might not need this
-% % degenName = strcat(vspName, "_DegenGeom");
-% writeVSPAeroScript(aircraft, vspName, alphas, mach);
-% 
-% command = sprintf('vspaero -omp 6 %s',vspName);
-% system(command);
-% pause(2);
-
-
 %% Read Polar
 
 command = strcat("rename ", vspName, ".polar ",vspName, ".polar.txt");

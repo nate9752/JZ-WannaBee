@@ -93,23 +93,28 @@ components = {'wing', 'fuselage','horztail','verttail'};
 %%% Wings %%%
 wingsections = 2;
 b = 3;   % wingspan [in]
-camber_w = 0.02;   % 2% max camber
-camberLoc_w = 0.4;   % located 40% chord
-tc_w = 0.12;   % thickness to chord NACA 2412
 df = 0;   % wing covered by fuselage; 0 b/c high wing config
 Qfw = 1;   % high wing config interference value
 
 % --- Section 1 --- %
-lambda_w1 = 1;   % taper ratio section 1
-spanpct_w1 = 0.5;   % 50% of span is contained in section 1
-Lam_w1 = 20;   % sweep angle (capital lambda) wing
-theta_w1 = 0;   % twist (deg) section 1, not used for now
+aircraft.geom.wing.section(1).taper = 1;
+aircraft.geom.wing.section(1).spanpct = 0.5;
+aircraft.geom.wing.section(1).sweep = 20;
+aircraft.geom.wing.section(1).twist = 0;
+aircraft.geom.wing.section(1).airfoil.name = 'NACA2412';
+aircraft.geom.wing.section(1).airfoil.tc = 0.12;
+aircraft.geom.wing.section(1).airfoil.camber = 0.02;
+aircraft.geom.wing.section(1).airfoil.camberLoc = 0.4;
 
 % --- Section 2 --- %
-lambda_w2 = 1;   % taper ratio section 2
-spanpct_w2 = 1 - spanpct_w1;
-Lam_w2 = Lam_w1;   % sweep angle, same as previous section
-theta_w2 = 0;   % twist (deg) section 2, not used for now
+aircraft.geom.wing.section(2).taper = 1;
+aircraft.geom.wing.section(2).spanpct = 0.5;
+aircraft.geom.wing.section(2).sweep = 20;
+aircraft.geom.wing.section(2).twist = 0;
+aircraft.geom.wing.section(2).airfoil.name = 'NACA0012';
+aircraft.geom.wing.section(2).airfoil.tc = 0.12;
+aircraft.geom.wing.section(2).airfoil.camber = 0;
+aircraft.geom.wing.section(2).airfoil.camberLoc = 0;
 
 
 
@@ -121,27 +126,33 @@ Qff = 1;   % interference factor fuselage
 
 %%%% Horizontal Tail %%%
 htsections = 1;
-tc_ht = 0.12;   % thickness to chord ratio horizontal tail
 Qf_ht = 1;   % interference factor horizontal tail
 
 % --- Section 1 --- %
-Lam_ht1 = 0 * pi/180;    % sweep angle (capital lambda) horizontal tail
-lambda_ht1 = 1;   % horizontal tail taper ratio
-spanpct_ht1 = 1;
-theta_ht1 = 0;
+aircraft.geom.horztail.section(1).taper = 1;
+aircraft.geom.horztail.section(1).spanpct = 1;
+aircraft.geom.horztail.section(1).sweep = 0;
+aircraft.geom.horztail.section(1).twist = 0;
+aircraft.geom.horztail.section(1).airfoil.name = 'NACA0012';
+aircraft.geom.horztail.section(1).airfoil.tc = 0.12;
+aircraft.geom.horztail.section(1).airfoil.camber = 0;
+aircraft.geom.horztail.section(1).airfoil.camberLoc = 0;
 
 
 
 %%% Vertical Tail %%%
 vtsections = 1;
-tc_vt = 0.12;   % thickness to chord ratio vertical tail
 Qf_vt = 1;   % interference factor vertical tail
 
 % --- Section 1 --- %
-Lam_vt1 = 30;    % sweep angle (capital lambda) horizontal tail
-lambda_vt1 = 0.65;   % horizontal tail taper ratio
-spanpct_vt1 = 1;
-theta_vt1 = 0;
+aircraft.geom.verttail.section(1).taper = 0.65;
+aircraft.geom.verttail.section(1).spanpct = 1;
+aircraft.geom.verttail.section(1).sweep = 30;
+aircraft.geom.verttail.section(1).twist = 0;
+aircraft.geom.verttail.section(1).airfoil.name = 'NACA0012';
+aircraft.geom.verttail.section(1).airfoil.tc = 0.12;
+aircraft.geom.verttail.section(1).airfoil.camber = 0;
+aircraft.geom.verttail.section(1).airfoil.camberLoc = 0;
 
 
 
@@ -249,19 +260,8 @@ aircraft.geom.components = components;
 % geom.wing
 aircraft.geom.wing.sections = wingsections;
 aircraft.geom.wing.b = b;
-aircraft.geom.wing.tc = tc_w;
-aircraft.geom.wing.camber = camber_w;
-aircraft.geom.wing.camberLoc = camberLoc_w;
 aircraft.geom.wing.df = df;
 aircraft.geom.wing.Qfw = Qfw;
-aircraft.geom.wing.sec1.lam = lambda_w1;
-aircraft.geom.wing.sec1.Lam = Lam_w1;
-aircraft.geom.wing.sec1.spanpct = spanpct_w1;
-aircraft.geom.wing.sec1.theta = theta_w1;
-aircraft.geom.wing.sec2.lam = lambda_w2;
-aircraft.geom.wing.sec2.Lam = Lam_w2;
-aircraft.geom.wing.sec2.spanpct = spanpct_w2;
-aircraft.geom.wing.sec2.theta = theta_w2;
 
 % geom.fuselage
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
@@ -269,24 +269,15 @@ aircraft.geom.fuselage.Qff = Qff;
 aircraft.geom.fuselage.a_fus = a_fus;
 aircraft.geom.fuselage.C_fus = C_fus;
 
+
 % geom.horztail
 aircraft.geom.horztail.sections = htsections;
-aircraft.geom.horztail.tc = tc_ht;
 aircraft.geom.horztail.Qf = Qf_ht;
 
-aircraft.geom.horztail.sec1.lam = lambda_ht1;
-aircraft.geom.horztail.sec1.Lam = Lam_ht1;
-aircraft.geom.horztail.sec1.spanpct = spanpct_ht1;
-aircraft.geom.horztail.sec1.theta = theta_ht1;
 
 % geom.verttail
 aircraft.geom.verttail.sections = vtsections;
-aircraft.geom.verttail.tc = tc_vt;
 aircraft.geom.verttail.Qf = Qf_vt;
-aircraft.geom.verttail.sec1.lam = lambda_vt1;
-aircraft.geom.verttail.sec1.Lam = Lam_vt1;
-aircraft.geom.verttail.sec1.spanpct = spanpct_vt1;
-aircraft.geom.verttail.sec1.theta = theta_vt1;
 
 % geom.landingGear
 aircraft.geom.landingGearFlag = landingGearFlag;

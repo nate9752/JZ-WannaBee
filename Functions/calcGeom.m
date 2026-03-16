@@ -12,27 +12,25 @@ Sref = aircraft.geom.wing.Sref;
 b = aircraft.geom.wing.b;
 AR = aircraft.geom.wing.AR;
 
+geom = aircraft.geom;
 
 %% Wing 
 
 if aircraft.geom.wing.sections == 2
-    lam_w1 = aircraft.geom.wing.sec1.lam;   % taper of section 1
-    y_w1 = aircraft.geom.wing.sec1.spanpct * b/2;   % span of section 1
+    lam_w1 = geom.wing.section(1).taper;   % taper of section 1
+    y_w1 = geom.wing.section(1).spanpct * b/2;   % span of section 1
 
-    lam_w2 = aircraft.geom.wing.sec2.lam;   % taper of section 2
-    y_w2 = aircraft.geom.wing.sec2.spanpct * b/2;   % span of section 2
+    lam_w2 = geom.wing.section(2).taper;   % taper of section 2
+    y_w2 = y_w1 + geom.wing.section(2).spanpct * b/2;   % span of section 2
 
     cr = (Sref/2) / (.5*(1+lam_w1)*y_w1 + 0.5*(lam_w1+lam_w1*lam_w2)*y_w2);   % root chord station 0
 
     c1 = lam_w1*cr;   % chord station 1
     c2 = lam_w2*c1;   % chord station 2
 
-    aircraft.geom.wing.stat1.c = cr;
-    aircraft.geom.wing.stat2.c = c1;
-    aircraft.geom.wing.stat3.c = c2;
-    aircraft.geom.wing.stat1.y = 0;
-    aircraft.geom.wing.stat2.y = y_w1;
-    aircraft.geom.wing.stat3.y = y_w2;
+    aircraft.geom.wing.c = [cr c1 c2];
+    aircraft.geom.wing.y = [0 y_w1 y_w2];
+
 end
 
 
@@ -43,7 +41,7 @@ a_fus = aircraft.geom.fuselage.a_fus;
 C_fus = aircraft.geom.fuselage.C_fus;
 
 l_fuselage_homebuilt = a_fus*gross^C_fus;   % Raymer Fuselage Length
-l_fuselage = l_fuselage_homebuilt;   % converts to inches
+l_fuselage = l_fuselage_homebuilt;
 
 
 
@@ -58,15 +56,14 @@ bh = sqrt(Sht * ARht);   % span horizontal tail
 ch = Sht / bh;   % mean chord of horizontal tail
 
 if aircraft.geom.horztail.sections == 1
-    lam_ht1 = aircraft.geom.horztail.sec1.lam;
-    y_ht1 = aircraft.geom.horztail.sec1.spanpct * bh/2;
+    lam_ht1 = geom.horztail.section(1).taper;
+    y_ht1 = geom.horztail.section(1).spanpct * bh/2;
 
     ch_r = 2*Sht / (bh*(1+lam_ht1));   % root chord horizontal tail
     ch_t = lam_ht1*ch_r;   % tip chord horizontal tail 
 
-    aircraft.geom.horztail.stat1.c = ch_r;
-    aircraft.geom.horztail.stat2.c = ch_t;
-    aircraft.geom.horztail.stat2.y = y_ht1;
+    aircraft.geom.horztail.c = [ch_r ch_t];
+    aircraft.geom.horztail.y = [0 y_ht1];
 end
 
 
@@ -81,15 +78,14 @@ bv = sqrt(Svt * ARvt);   % span vertical tail
 cv = Svt / bv;   % mean chord vertical tail
 
 if aircraft.geom.verttail.sections == 1
-    lam_vt1 = aircraft.geom.verttail.sec1.lam;
-    y_vt1 = aircraft.geom.verttail.sec1.spanpct * bv;
+    lam_vt1 = geom.verttail.section(1).taper;
+    y_vt1 = geom.verttail.section(1).spanpct * bv;
 
     cv_r = 2*Svt / (bv*(1+lam_vt1));   % root chord horizontal tail
     cv_t = lam_vt1*cv_r;   % tip chord horizontal tail 
 
-    aircraft.geom.verttail.stat1.c = cv_r;
-    aircraft.geom.verttail.stat2.c = cv_t;
-    aircraft.geom.verttail.stat2.y = y_vt1;
+    aircraft.geom.verttail.c = [cv_r cv_t];
+    aircraft.geom.verttail.y = [0 y_vt1];
 end
 
 
