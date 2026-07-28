@@ -13,10 +13,14 @@
 %      1. An aircraft data file must be made, starting
 %      with version 1. This includes basic performance parameters and some
 %      known design criteria. 
+%
 %      2. With initial sizing complete, the user can then size the 
 %      propulsion system using eCalc to select specific instramentation. 
-%      Then, XFLR5 or open VSP can be used to optimize the aerodynamic 
-%      design.
+%      Then, open VSP can be used to optimize the aerodynamic 
+%      design. Once a good VSP model is created, you can export a .stp.bak
+%      from VSP by going to trimmed surfaces, output, and exporting a .stp
+%      file after clicking "intersect and export"
+%
 %      3. A CAD model can be made to aid the manufacturing process and to
 %      finalize the weights and locations of all systems. Along the way,
 %      different versions of the aircraft data file can be made with flags
@@ -50,7 +54,7 @@ addpath(genpath(pwd));
 
 %% Flags
 
-flight_flag = 1;   % set to true to run a mission
+flight_flag = 0;   % set to true to run a mission
 openVSP_flag = 0;   % set to true to run OpenVSP simulation
 
 

@@ -88,33 +88,52 @@ Cd = Cdo + k1*Cl.^2 + k2*Cl;
 
 %% Preliminary Aero Geom Estimates
 
-components = {'wing', 'fuselage','horztail','verttail'};
+build_components = {'wing','horztail','verttail','fusblock','tailblock','bodypole'};
 
 %%% Wings %%%
 wingsections = 2;
 b = 3;   % wingspan [in]
 df = 0;   % wing covered by fuselage; 0 b/c high wing config
 Qfw = 1;   % high wing config interference value
+w_offset = 0.75/12;   % z shift in wing (ft)
+
+
+% --- Station 1 --- % 
+aircraft.geom.wing.AF.name{1} = 'NACA2412';
+aircraft.geom.wing.AF.tc(1) = 0.12;
+aircraft.geom.wing.AF.camber(1) = 0.02;
+aircraft.geom.wing.AF.camberLoc(1) = 0.4;
+aircraft.geom.wing.AF.dat{1} = readmatrix('naca2412.dat');
+
+
+% --- Station 2 --- %
+aircraft.geom.wing.AF.name{2} = 'NACA2412';
+aircraft.geom.wing.AF.tc(2) = 0.12;
+aircraft.geom.wing.AF.camber(2) = 0.02;
+aircraft.geom.wing.AF.camberLoc(2) = 0.4;
+aircraft.geom.wing.AF.dat{2} = readmatrix('naca2412.dat');
+
 
 % --- Section 1 --- %
 aircraft.geom.wing.section(1).taper = 1;
-aircraft.geom.wing.section(1).spanpct = 0.5;
-aircraft.geom.wing.section(1).sweep = 20;
+aircraft.geom.wing.section(1).spanpct = 0.35;
+aircraft.geom.wing.section(1).sweep = 0;
 aircraft.geom.wing.section(1).twist = 0;
-aircraft.geom.wing.section(1).airfoil.name = 'NACA2412';
-aircraft.geom.wing.section(1).airfoil.tc = 0.12;
-aircraft.geom.wing.section(1).airfoil.camber = 0.02;
-aircraft.geom.wing.section(1).airfoil.camberLoc = 0.4;
+
+
+% --- Station 3 --- %
+aircraft.geom.wing.AF.name{3} = 'NACA2412';
+aircraft.geom.wing.AF.tc(3) = 0.12;
+aircraft.geom.wing.AF.camber(3) = 0.02;
+aircraft.geom.wing.AF.camberLoc(3) = 0.4;
+aircraft.geom.wing.AF.dat{3} = readmatrix('naca2412.dat');
+
 
 % --- Section 2 --- %
-aircraft.geom.wing.section(2).taper = 1;
-aircraft.geom.wing.section(2).spanpct = 0.5;
-aircraft.geom.wing.section(2).sweep = 20;
+aircraft.geom.wing.section(2).taper = .7;
+aircraft.geom.wing.section(2).spanpct = 0.65;
+aircraft.geom.wing.section(2).sweep = 15;
 aircraft.geom.wing.section(2).twist = 0;
-aircraft.geom.wing.section(2).airfoil.name = 'NACA0012';
-aircraft.geom.wing.section(2).airfoil.tc = 0.12;
-aircraft.geom.wing.section(2).airfoil.camber = 0;
-aircraft.geom.wing.section(2).airfoil.camberLoc = 0;
 
 
 
@@ -128,31 +147,58 @@ Qff = 1;   % interference factor fuselage
 htsections = 1;
 Qf_ht = 1;   % interference factor horizontal tail
 
+
+% --- Station 1 --- %
+aircraft.geom.horztail.AF.name{1} = 'NACA0012';
+aircraft.geom.horztail.AF.tc(1) = 0.12;
+aircraft.geom.horztail.AF.camber(1) = 0;
+aircraft.geom.horztail.AF.camberLoc(1) = 0;
+aircraft.geom.horztail.AF.dat{1} = readmatrix('naca0012.dat');
+
+
+% --- Station 2 --- %
+aircraft.geom.horztail.AF.name{2} = 'NACA0012';
+aircraft.geom.horztail.AF.tc(2) = 0.12;
+aircraft.geom.horztail.AF.camber(2) = 0;
+aircraft.geom.horztail.AF.camberLoc(2) = 0;
+aircraft.geom.horztail.AF.dat{2} = readmatrix('naca0012.dat');
+
+
 % --- Section 1 --- %
 aircraft.geom.horztail.section(1).taper = 1;
 aircraft.geom.horztail.section(1).spanpct = 1;
 aircraft.geom.horztail.section(1).sweep = 0;
 aircraft.geom.horztail.section(1).twist = 0;
-aircraft.geom.horztail.section(1).airfoil.name = 'NACA0012';
-aircraft.geom.horztail.section(1).airfoil.tc = 0.12;
-aircraft.geom.horztail.section(1).airfoil.camber = 0;
-aircraft.geom.horztail.section(1).airfoil.camberLoc = 0;
 
 
 
 %%% Vertical Tail %%%
 vtsections = 1;
 Qf_vt = 1;   % interference factor vertical tail
+vt_offset = 0.75/12;   % Vertical tail offset in z direction (ft)
+
+
+% --- Station 1 --- % 
+aircraft.geom.verttail.AF.name = 'NACA0012';
+aircraft.geom.verttail.AF.tc = 0.12;
+aircraft.geom.verttail.AF.camber = 0;
+aircraft.geom.verttail.AF.camberLoc = 0;
+aircraft.geom.verttail.AF.dat{1} = readmatrix('naca0012.dat');
+
+
+% --- Station 2 --- %
+aircraft.geom.verttail.section(1).airfoil.name = 'NACA0012';
+aircraft.geom.verttail.section(1).airfoil.tc = 0.12;
+aircraft.geom.verttail.section(1).airfoil.camber = 0;
+aircraft.geom.verttail.section(1).airfoil.camberLoc = 0;
+aircraft.geom.vertail.AF.dat{2} = readmatrix('naca0012.dat');
+
 
 % --- Section 1 --- %
 aircraft.geom.verttail.section(1).taper = 0.65;
 aircraft.geom.verttail.section(1).spanpct = 1;
 aircraft.geom.verttail.section(1).sweep = 30;
 aircraft.geom.verttail.section(1).twist = 0;
-aircraft.geom.verttail.section(1).airfoil.name = 'NACA0012';
-aircraft.geom.verttail.section(1).airfoil.tc = 0.12;
-aircraft.geom.verttail.section(1).airfoil.camber = 0;
-aircraft.geom.verttail.section(1).airfoil.camberLoc = 0;
 
 
 
@@ -164,8 +210,8 @@ landingGearFlag = 0;
 %% Fuselage Type
 
 % Raymer Fuselage coefficients for length = a * W^C
-a_fus = 4.37;
-C_fus = 0.23;
+a_fus = 2;
+C_fus = 0.4;
                     % Sailplane unpowered: a = 0.86, C =.48
                     % Sailplane powered: a = 3.68, C = 0.48
                     % Homebuilt composite: a = 3.5, C = .23
@@ -255,13 +301,14 @@ aircraft.aero.k1 = k1;
 aircraft.aero.k2 = k2;
 
 % geom
-aircraft.geom.components = components;
+aircraft.geom.components = build_components;
 
 % geom.wing
 aircraft.geom.wing.sections = wingsections;
 aircraft.geom.wing.b = b;
 aircraft.geom.wing.df = df;
 aircraft.geom.wing.Qfw = Qfw;
+aircraft.geom.wing.offset = w_offset;
 
 % geom.fuselage
 aircraft.geom.fuselage.diam_fuselage = diam_fuselage;
@@ -278,6 +325,7 @@ aircraft.geom.horztail.Qf = Qf_ht;
 % geom.verttail
 aircraft.geom.verttail.sections = vtsections;
 aircraft.geom.verttail.Qf = Qf_vt;
+aircraft.geom.verttail.offset = vt_offset;
 
 % geom.landingGear
 aircraft.geom.landingGearFlag = landingGearFlag;

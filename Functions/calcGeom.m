@@ -45,6 +45,7 @@ l_fuselage = l_fuselage_homebuilt;
 
 
 
+
 %% Horizontal Tail Sizing - Raymer Chapter 6
 
 ARht = 0.5 * AR;
@@ -85,7 +86,7 @@ if aircraft.geom.verttail.sections == 1
     cv_t = lam_vt1*cv_r;   % tip chord horizontal tail 
 
     aircraft.geom.verttail.c = [cv_r cv_t];
-    aircraft.geom.verttail.y = [0 y_vt1];
+    aircraft.geom.verttail.y = [0 y_vt1] + aircraft.geom.verttail.offset;
 end
 
 
@@ -133,7 +134,7 @@ aircraft.geom.verttail.tipchord = cv_t;
 aircraft.geom.verttail.span = bv;
 aircraft.geom.verttail.AR = ARvt;
 aircraft.geom.verttail.Lv = Lv;
-aircraft.geom.verttail.Vvt = Cvt;
+aircraft.geom.verttail.Cvt = Cvt;
 
 
 % Control Surfaces 

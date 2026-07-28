@@ -15,7 +15,7 @@ function plotGeom(aircraft)
 geom = aircraft.geom;
 
 figure;
-hold on; axis equal; grid on;
+hold on; axis equal; grid on; axis tight;
 
 
 %% Wing Geometry
@@ -25,6 +25,7 @@ c = geom.wing.c;
 nStations = length(y);
 xLE = zeros(1,nStations);
 xLE(1) = geom.wing.nose2LE;
+w_offset = aircraft.geom.wing.offset;
 
 for i = 1:nStations-1
     sweep = geom.wing.section(i).sweep;
@@ -33,10 +34,24 @@ for i = 1:nStations-1
 end
 xTE = xLE + c;
 
-xpoly = [xLE fliplr(xTE)];
-ypoly = [y fliplr(y)];
-fill(xpoly,ypoly,'b','FaceAlpha',0.4);
-fill(xpoly,-ypoly,'b','FaceAlpha',0.4);
+
+for i = 1:nStations
+    statAF = geom.wing.AF.dat{1};
+    xaf = statAF(:,1);
+    zaf = statAF(:,2);
+
+    X(:,i) = xLE(i) + xaf*c(i);
+    Y(:,i) = y(i)*ones(size(xaf));
+    Z(:,i) = w_offset + zaf*c(i);
+
+    plot3(X,Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+    plot3(X,-Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+end
+
+surf(X,Y,Z,'FaceColor',[0.7 0.7 0.9],'EdgeColor','none','FaceAlpha',0.5,'DisplayName','Wing')
+surf(X,-Y,Z,'FaceColor',[0.7 0.7 0.9],'EdgeColor','none','FaceAlpha',0.5,'HandleVisibility','off');
+
+xlabel('X (ft)'); ylabel('Y (ft)'); zlabel('Z (ft)');
 
 
 %% Horizontal Tail Geometry
@@ -54,10 +69,62 @@ for i = 1:nStations-1
 end
 xTE = xLE + c;
 
-xpoly = [xLE fliplr(xTE)];
-ypoly = [y fliplr(y)];
-fill(xpoly,ypoly,'r','FaceAlpha',0.4);
-fill(xpoly,-ypoly,'r','FaceAlpha',0.4);
+
+clear X Y Z;
+for i = 1:nStations
+    statAF = geom.horztail.AF.dat{1};
+    xaf = statAF(:,1);
+    zaf = statAF(:,2);
+
+    X(:,i) = xLE(i) + xaf*c(i);
+    Y(:,i) = y(i)*ones(size(xaf));
+    Z(:,i) = zaf*c(i);
+
+    plot3(X,Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+    plot3(X,-Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+end
+
+surf(X,Y,Z,'FaceColor','r','EdgeColor','none','FaceAlpha',0.5,'DisplayName','Horizontal Tail')
+surf(X,-Y,Z,'FaceColor','r','EdgeColor','none','FaceAlpha',0.5,'HandleVisibility','off');
+
+
+%% Vertical Tail
+
+z = geom.verttail.y;
+c = geom.verttail.c;
+nStations = length(z);
+xLE = zeros(1,nStations);
+xLE(1) = geom.wing.nose2LE + geom.verttail.Lv;
+
+for i = 1:nStations-1
+    sweep = geom.verttail.section(i).sweep;
+    dz = z(i+1) - z(i);  
+    xLE(i+1) = xLE(i) + dz * tand(sweep);
+end
+xTE = xLE + c;
+
+
+clear X Y Z;
+for i = 1:nStations
+    statAF = geom.verttail.AF.dat{1};
+    xaf = statAF(:,1);
+    yaf = statAF(:,2);
+
+    X(:,i) = xLE(i) + xaf*c(i);
+    Y(:,i) = yaf*c(i);
+    Z(:,i) = z(i)*ones(size(xaf));
+
+    plot3(X,Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+    plot3(X,-Y,Z,'k','LineWidth',1.3,'HandleVisibility','off');
+end
+
+surf(X,Y,Z,'FaceColor','m','EdgeColor','none','FaceAlpha',0.5,'DisplayName','Vertical Tail')
+surf(X,-Y,Z,'FaceColor','m','EdgeColor','none','FaceAlpha',0.5,'HandleVisibility','off');
+
+
+
+%% Tail Block
+% Conn
 
 
 %% Fuselage
@@ -67,8 +134,11 @@ fuse_w = geom.fuselage.diam_fuselage;
 xf = [0 lf lf 0];
 yf = fuse_w/2 * [1 1 -1 -1];
 fill(xf,yf,'k','FaceAlpha',0.2);
+
 xlabel('x (ft)'); ylabel('y (ft)');
 title('Aircraft Planform');
+legend('show');
+
 
 end
 
